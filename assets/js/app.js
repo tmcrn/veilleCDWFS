@@ -96,6 +96,10 @@
       el("p", { class: "eyebrow", text: topic.number + " — " + topic.cadenceLabel }),
       el("h2", { id: "titre-" + topic.id, text: topic.title }),
       el("p", { text: topic.intro }),
+      topic.why ? el("div", { class: "topic__why" }, [
+        el("h3", { text: "Pourquoi ce sujet ?" }),
+        el("p", { text: topic.why }),
+      ]) : null,
       el("p", { class: "topic__status" }, [
         el("span", { class: "badge", text: "Prochain relevé : " + fmtDay.format(current.end) }),
         el("span", { class: "topic__count", text: allEntries.length + " annonces · " + periodsCount + " " + unit + "s suivi" + (topic.cadence === "fortnight" ? "e" : "") + "s" }),

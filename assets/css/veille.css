@@ -534,3 +534,55 @@
     margin-bottom: var(--s4);
   }
 }
+
+/* ==========================================================================
+   « Pourquoi ce sujet ? » et méthode (repris de l'ancienne page Veille du portfolio)
+   ========================================================================== */
+
+@layer components {
+  .page-head .topic__why {
+    margin: 0 0 var(--s5);
+    padding-left: var(--s4);
+    border-left: 3px solid var(--accent);
+  }
+
+  .topic__why h3 {
+    margin: 0 0 var(--s2);
+    font-size: var(--fs-h3);
+  }
+
+  .page-head .topic__why p {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .method {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s5);
+    margin: 0;
+    padding-inline: 0;
+    list-style: none;
+  }
+
+  /* Carte non cliquable : pas de bordure terracotta au survol */
+  .method__item:hover,
+  .method__item:focus-within {
+    border-color: var(--border);
+  }
+
+  .method__item h3 {
+    margin: 0 0 var(--s3);
+    font-size: var(--fs-h3);
+  }
+
+  .method__item p:last-child {
+    margin: 0;
+  }
+
+  @media (max-width: 860px) {
+    .method {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

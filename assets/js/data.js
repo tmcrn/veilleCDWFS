@@ -22,6 +22,8 @@ window.VEILLE = {
       ],
       intro:
         "Kafka, Flink, Pulsar, Fluss et les plateformes autour : les versions, les rachats et les nouvelles architectures du temps réel.",
+      why:
+        "Par curiosité technique : je voulais comprendre comment une application traite des données au moment où elles arrivent, plutôt qu'en lot une fois par nuit. Paiements, suivi de livraison, recommandations : beaucoup de services que j'utilise reposent sur ces outils. Suivre leurs évolutions chaque semaine m'aide à voir quelles briques s'imposent et pourquoi.",
     },
     {
       id: "ia",
@@ -37,6 +39,8 @@ window.VEILLE = {
       ],
       intro:
         "Modèles, agents de code et outils pour les développeurs : ce qui change concrètement dans la façon d'écrire du logiciel.",
+      why:
+        "J'utilise des assistants IA tous les jours pour coder : complétion, explication d'erreurs, relecture, génération de tests. Les outils changent vite et ce qui marchait il y a un mois n'est plus forcément le meilleur choix. Cette veille m'aide à choisir les bons outils, à savoir ce qu'ils font vraiment et à garder un regard critique sur leurs limites.",
     },
     {
       id: "quantique",
@@ -53,6 +57,8 @@ window.VEILLE = {
       ],
       intro:
         "Correction d'erreurs, matériel, industrie et cryptographie post-quantique : les étapes vers une machine utile.",
+      why:
+        "C'est une technologie d'avenir qui peut changer l'informatique sur le long terme, notamment la sécurité : une machine assez puissante casserait une partie du chiffrement utilisé aujourd'hui. Les progrès sont lents et souvent exagérés, d'où un relevé tous les trois mois, pour suivre les vraies étapes sans me laisser emporter par les annonces.",
     },
   ],
 
