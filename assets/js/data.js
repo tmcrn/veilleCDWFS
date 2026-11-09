@@ -151,7 +151,7 @@ window.VEILLE = {
       takeaway: "Un concurrent sérieux à Kafka pour les usages analytiques.",
       tags: ["Fluss", "Flink", "Lakehouse"],
       sources: [
-        { label: "Incubateur Apache", url: "https://incubator.apache.org/projects/fluss.html" },
+        { label: "fluss.apache.org", url: "https://fluss.apache.org/blog/releases/0.9/" },
       ],
     },
     {
@@ -216,7 +216,8 @@ window.VEILLE = {
       takeaway: "Même les acteurs de Pulsar adoptent le protocole Kafka.",
       tags: ["StreamNative", "Kafka", "Lakehouse"],
       sources: [
-        { label: "Business Wire", url: "https://www.businesswire.com/news/home/20260407143701/en/StreamNative-Introduces-Lakestream-Architecture-and-Launches-Native-Kafka-Service-Unifying-Streaming-and-the-Lakehouse" },
+        { label: "StreamNative", url: "https://streamnative.io/blog/from-streams-to-lakestreams" },
+        { label: "StreamNative (Kafka)", url: "https://streamnative.io/blog/we-are-a-kafka-company-too" },
       ],
     },
     {
@@ -280,12 +281,12 @@ window.VEILLE = {
       date: "2026-07-16",
       title: "Apache Fluss devient un projet de premier niveau",
       summary:
-        "Le conseil de la fondation Apache a voté la sortie de Fluss de l'incubateur. L'annonce publique a suivi début août.",
+        "Le conseil de la fondation Apache a voté la sortie de Fluss de l'incubateur, annoncée publiquement le 6 août. Le projet compte alors 157 contributeurs. Fluss 1.0 suit le 21 septembre, avec une passerelle REST en Rust, un accès Python natif et le support d'Apache Hudi.",
       takeaway: "Un projet de streaming désormais mature selon les critères Apache.",
       tags: ["Fluss", "Apache"],
       sources: [
-        { label: "Incubateur Apache", url: "https://incubator.apache.org/projects/fluss.html" },
-        { label: "Blog Fluss", url: "https://fluss.incubator.apache.org/blog/apache-fluss-graduates-to-top-level-project/" },
+        { label: "Fondation Apache", url: "https://news.apache.org/foundation/entry/the-apache-software-foundation-announces-new-top-level-projects-5" },
+        { label: "Blog Fluss", url: "https://fluss.apache.org/blog/apache-fluss-graduates-to-top-level-project/" },
       ],
     },
     {
@@ -298,7 +299,7 @@ window.VEILLE = {
       takeaway: "Les éditeurs de streaming ajoutent une couche de requête pour se rapprocher des bases de données.",
       tags: ["Redpanda", "SQL", "Agents"],
       sources: [
-        { label: "Redpanda", url: "https://www.redpanda.com/categories/announcement" },
+        { label: "Redpanda", url: "https://www.redpanda.com/blog/query-real-time-analytics-google-cloud" },
       ],
     },
     {
@@ -447,7 +448,7 @@ window.VEILLE = {
       takeaway: "Une nouvelle version majeure environ tous les trois mois chez chaque fournisseur.",
       tags: ["OpenAI", "Modèle"],
       sources: [
-        { label: "Wikipédia", url: "https://en.wikipedia.org/wiki/GPT-5.2" },
+        { label: "OpenAI", url: "https://openai.com/index/introducing-gpt-5-2/" },
       ],
     },
     {
@@ -460,7 +461,7 @@ window.VEILLE = {
       takeaway: "Les petits modèles rapides suffisent pour une grande partie des tâches de code.",
       tags: ["Google", "Modèle"],
       sources: [
-        { label: "Google", url: "https://blog.google/products-and-platforms/products/gemini/gemini-3/" },
+        { label: "Google", url: "https://blog.google/products/gemini/gemini-3-flash/" },
       ],
     },
     {
@@ -473,7 +474,7 @@ window.VEILLE = {
       takeaway: "On passe d'un assistant dans l'éditeur à la supervision de plusieurs agents.",
       tags: ["OpenAI", "Codex", "Agents"],
       sources: [
-        { label: "Wikipédia", url: "https://en.wikipedia.org/wiki/OpenAI_Codex_(AI_agent)" },
+        { label: "OpenAI", url: "https://openai.com/index/introducing-the-codex-app/" },
       ],
     },
     {
@@ -487,7 +488,7 @@ window.VEILLE = {
       tags: ["Anthropic", "OpenAI", "Modèle"],
       sources: [
         { label: "Anthropic", url: "https://www.anthropic.com/news/claude-opus-4-6" },
-        { label: "Wikipédia (GPT-5.3-Codex)", url: "https://en.wikipedia.org/wiki/GPT-5.3-Codex" },
+        { label: "OpenAI", url: "https://openai.com/index/introducing-gpt-5-3-codex/" },
       ],
     },
     {
@@ -513,7 +514,7 @@ window.VEILLE = {
       takeaway: "Les modèles arrivent dans les outils de code en même temps que dans le chat.",
       tags: ["OpenAI", "Modèle"],
       sources: [
-        { label: "Wikipédia", url: "https://en.wikipedia.org/wiki/GPT-5.4" },
+        { label: "OpenAI", url: "https://openai.com/index/introducing-gpt-5-4/" },
       ],
     },
     {
@@ -526,7 +527,8 @@ window.VEILLE = {
       takeaway: "Les éditeurs se redessinent autour des agents.",
       tags: ["Cursor", "Agents", "IDE"],
       sources: [
-        { label: "The New Stack", url: "https://thenewstack.io/ai-coding-tool-stack/" },
+        { label: "Changelog Cursor 3.0", url: "https://cursor.com/changelog/3-0" },
+        { label: "Cursor", url: "https://cursor.com/blog/cursor-3" },
       ],
     },
     {
@@ -552,7 +554,7 @@ window.VEILLE = {
       takeaway: "Les meilleurs modèles coûtent plus cher : il faut choisir le bon modèle selon la tâche.",
       tags: ["OpenAI", "Modèle"],
       sources: [
-        { label: "Wikipédia", url: "https://en.wikipedia.org/wiki/GPT-5.5" },
+        { label: "OpenAI", url: "https://openai.com/index/introducing-gpt-5-5/" },
       ],
     },
     {
@@ -578,6 +580,7 @@ window.VEILLE = {
       takeaway: "Les capacités réservées en avril deviennent accessibles à tous.",
       tags: ["Anthropic", "Modèle"],
       sources: [
+        { label: "Anthropic", url: "https://www.anthropic.com/news/claude-fable-5-mythos-5" },
         { label: "CNBC", url: "https://www.cnbc.com/2026/06/09/anthropic-mythos-claude-fable-5.html" },
       ],
     },
@@ -591,8 +594,8 @@ window.VEILLE = {
       takeaway: "L'agent de code devient une fonction de l'assistant généraliste.",
       tags: ["OpenAI", "Codex"],
       sources: [
-        { label: "Wikipédia", url: "https://en.wikipedia.org/wiki/Codex_(AI_agent)" },
-        { label: "Notes de version", url: "https://help.openai.com/en/articles/6825453-chatgpt-release-notes" },
+        { label: "OpenAI", url: "https://openai.com/index/chatgpt-for-your-most-ambitious-work/" },
+        { label: "Aide OpenAI", url: "https://help.openai.com/en/articles/20001276-moving-to-the-new-chatgpt-desktop-app" },
       ],
     },
     {
@@ -605,7 +608,7 @@ window.VEILLE = {
       takeaway: "Les modèles les plus puissants arrivent avec un accès réservé aux profils vérifiés.",
       tags: ["Anthropic", "Modèle"],
       sources: [
-        { label: "Wikipédia", url: "https://en.wikipedia.org/wiki/Claude_(language_model)" },
+        { label: "Anthropic", url: "https://www.anthropic.com/claude-fable-and-mythos-5-1" },
       ],
     },
     {
@@ -618,7 +621,7 @@ window.VEILLE = {
       takeaway: "Les sorties s'accélèrent : choisir un outil qui permet de changer facilement de modèle.",
       tags: ["Anthropic", "OpenAI", "Modèle"],
       sources: [
-        { label: "Wikipédia (Claude)", url: "https://en.wikipedia.org/wiki/Claude_(language_model)" },
+        { label: "Anthropic", url: "https://www.anthropic.com/claude-opus-5-5" },
         { label: "Notes de version OpenAI", url: "https://help.openai.com/en/articles/6825453-chatgpt-release-notes" },
       ],
     },
@@ -645,7 +648,8 @@ window.VEILLE = {
       takeaway: "Une gamme complète pour répartir les tâches : planifier avec un gros modèle, exécuter avec un petit.",
       tags: ["Anthropic", "Modèle"],
       sources: [
-        { label: "Wikipédia", url: "https://en.wikipedia.org/wiki/Claude_(language_model)" },
+        { label: "Anthropic (Haiku 5.5)", url: "https://www.anthropic.com/news/claude-haiku-5-5" },
+        { label: "Anthropic (Sonnet 5.5)", url: "https://www.anthropic.com/news/claude-sonnet-5-5" },
       ],
     },
     {
@@ -658,8 +662,8 @@ window.VEILLE = {
       takeaway: "Le travail du développeur glisse vers la revue et le pilotage d'agents.",
       tags: ["GitHub", "Copilot", "Agents"],
       sources: [
-        { label: "DEV Community", url: "https://dev.to/paullovelace/github-universe-2026-copilot-is-no-longer-an-autocomplete-it-now-runs-software-delivery-14ln" },
-        { label: "Global AI Community", url: "https://globalai.community/blog/github-universe-2026-day-1" },
+        { label: "GitHub", url: "https://github.blog/news-insights/company-news/github-universe-2026-evolving-every-layer-of-the-stack/" },
+        { label: "Changelog Copilot Fusion", url: "https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion/" },
       ],
     },
 
@@ -685,23 +689,25 @@ window.VEILLE = {
       date: "2026-04-14",
       title: "NVIDIA publie Ising, des modèles d'IA pour calibrer les processeurs quantiques",
       summary:
-        "Famille de modèles open source qui automatise l'étalonnage des qubits et la correction d'erreurs. Un mois plus tôt, PsiQuantum intégrait CUDA-Q pour simuler de grands circuits jusqu'à 450 fois plus vite que sur CPU.",
+        "Famille de modèles open source qui automatise l'étalonnage des qubits et la correction d'erreurs. Les modèles de décodage seraient jusqu'à 2,5 fois plus rapides que les méthodes classiques, selon NVIDIA. IQM les utilise déjà pour calibrer ses processeurs.",
       takeaway: "Les GPU et l'IA deviennent des outils indispensables pour faire fonctionner un ordinateur quantique.",
       tags: ["NVIDIA", "PsiQuantum", "IA"],
       sources: [
-        { label: "Quantum Computing Report", url: "https://quantumcomputingreport.com/news-archive-2026/" },
+        { label: "NVIDIA", url: "https://nvidianews.nvidia.com/news/nvidia-launches-ising-the-worlds-first-open-ai-models-to-accelerate-the-path-to-useful-quantum-computers" },
+        { label: "NVIDIA Developer", url: "https://developer.nvidia.com/blog/nvidia-ising-introduces-ai-powered-workflows-to-build-fault-tolerant-quantum-systems/" },
       ],
     },
     {
       topic: "quantique",
       category: "industrie",
-      date: "2026-05-26",
+      date: "2026-05-08",
       title: "Quantinuum dépose son dossier d'introduction en bourse",
       summary:
         "La filiale de Honeywell vise une valorisation de plus de 20 milliards de dollars et maintient son objectif d'une machine tolérante aux fautes, Apollo, pour 2029.",
       takeaway: "Le quantique passe de la recherche financée au marché boursier.",
       tags: ["Quantinuum", "Marché"],
       sources: [
+        { label: "SEC (Form S-1)", url: "https://www.sec.gov/Archives/edgar/data/0002110105/000162828026032836/quantinuum-sx1.htm" },
         { label: "The Quantum Insider", url: "https://thequantuminsider.com/2026/05/26/honeywell-backed-quantinuum-files-for-landmark-quantum-ipo" },
       ],
     },
@@ -709,14 +715,15 @@ window.VEILLE = {
       topic: "quantique",
       category: "securite",
       date: "2026-06-16",
-      title: "L'ANSSI exige la cryptographie post-quantique dès 2027",
+      title: "L'ANSSI exigera la cryptographie post-quantique dès 2027",
       summary:
-        "À la conférence France Quantum, l'ANSSI annonce qu'elle ne certifiera plus, à partir de 2027, les produits de sécurité sans cryptographie post-quantique. Elle recommande d'acheter uniquement des produits résistants au quantique d'ici 2030.",
+        "À la conférence France Quantum, l'ANSSI confirme son calendrier : à partir de 2027, la cryptographie post-quantique sera exigée pour entrer en qualification, au moins pour certains types de produits de sécurité. Elle publie des fiches techniques pour passer TLS 1.3, IPsec et SSH en mode hybride (algorithme classique + post-quantique).",
       takeaway: "Pour un développeur en France, c'est l'impact le plus concret : prévoir ML-KEM dans les échanges TLS et les produits.",
       tags: ["ANSSI", "Post-quantique", "Sécurité"],
       sources: [
+        { label: "ANSSI (FAQ PQC)", url: "https://cyber.gouv.fr/enjeux-technologiques/cryptographie-post-quantique/faq-pqc/" },
+        { label: "ANSSI (fiche TLS 1.3)", url: "https://messervices.cyber.gouv.fr/documents-guides/transition_post_quantique_tls_1_3.pdf" },
         { label: "Keeper Security", url: "https://www.keepersecurity.com/blog/2026/07/14/post-quantum-cryptography-anssi-certification/" },
-        { label: "Evertrust", url: "https://evertrust.io/blog/france-s-anssi-will-stop-certifying-non-quantum-safe-products-in-2027-here-s-what-that-means/" },
       ],
     },
     {
