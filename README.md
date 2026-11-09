@@ -10,6 +10,14 @@ Site statique de veille sur trois sujets, chacun à son rythme, depuis le 20 nov
 
 Direction artistique reprise du [portfolio](https://github.com/tmcrn/Portfolio) (`assets/css/tokens.css`).
 
+## Catégories
+
+- **Streaming** : Versions, Plateformes, Architecture, IA & agents, Marché
+- **IA générative** : Modèles, Outils & agents, Standards & usages
+- **Quantique** : Matériel, Correction d'erreurs, Industrie, Post-quantique
+
+Chaque sujet a des filtres par catégorie.
+
 ## Ajouter un relevé
 
 Tout le contenu est dans `assets/js/data.js`. Ajouter un objet dans `entries` :
@@ -17,6 +25,7 @@ Tout le contenu est dans `assets/js/data.js`. Ajouter un objet dans `entries` :
 ```js
 {
   topic: "streaming",            // streaming | ia | quantique
+  category: "versions",          // une des catégories du sujet (voir `topics`)
   date: "2026-11-12",            // date de l'annonce
   title: "…",
   summary: "…",

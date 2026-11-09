@@ -58,7 +58,7 @@
     return fmtShort.format(p.start) + " → " + fmtShortY.format(last);
   }
 
-  function entryCard(e) {
+  function entryCard(e, category) {
     var tags = el("ul", { class: "tags", "aria-label": "Mots-clés" },
       e.tags.map(function (t) { return el("li", { class: "tag", text: t }); }));
 
@@ -67,7 +67,10 @@
     }));
 
     return el("article", { class: "entry" }, [
-      el("p", { class: "eyebrow" }, [el("time", { datetime: e.date, text: fmtLong.format(parse(e.date)) })]),
+      el("p", { class: "eyebrow entry__eyebrow" }, [
+        el("time", { datetime: e.date, text: fmtLong.format(parse(e.date)) }),
+        category ? el("span", { class: "entry__category", text: category }) : null,
+      ]),
       el("h4", { class: "entry__title", text: e.title }),
       el("p", { class: "entry__summary", text: e.summary }),
       e.takeaway ? el("p", { class: "entry__takeaway" }, [el("strong", { text: "À retenir · " }), document.createTextNode(e.takeaway)]) : null,
@@ -75,22 +78,18 @@
     ]);
   }
 
+  function categoryLabel(topic, id) {
+    var c = topic.categories.filter(function (c) { return c.id === id; })[0];
+    return c ? c.label : "";
+  }
+
   function renderTopic(topic) {
-    var periods = periodsFor(topic.cadence);
-    var entries = data.entries
+    var allEntries = data.entries
       .filter(function (e) { return e.topic === topic.id; })
       .sort(function (a, b) { return a.date < b.date ? 1 : -1; });
-
-    entries.forEach(function (e) {
-      var d = parse(e.date);
-      for (var i = 0; i < periods.length; i++) {
-        if (d >= periods[i].start && d < periods[i].end) { periods[i].entries.push(e); return; }
-      }
-    });
-
-    var current = periods[periods.length - 1];
-    var covered = periods.filter(function (p) { return p.entries.length; }).length;
     var unit = topic.periodLabel.toLowerCase();
+    var periodsCount = periodsFor(topic.cadence).length;
+    var current = periodsFor(topic.cadence).pop();
 
     // En-tête du sujet
     var head = el("div", { class: "page-head" }, [
@@ -99,54 +98,89 @@
       el("p", { text: topic.intro }),
       el("p", { class: "topic__status" }, [
         el("span", { class: "badge", text: "Prochain relevé : " + fmtDay.format(current.end) }),
-        el("span", { class: "topic__count", text: entries.length + " annonces · " + periods.length + " " + unit + "s suivi" + (topic.cadence === "fortnight" ? "e" : "") + "s" }),
+        el("span", { class: "topic__count", text: allEntries.length + " annonces · " + periodsCount + " " + unit + "s suivi" + (topic.cadence === "fortnight" ? "e" : "") + "s" }),
       ]),
     ]);
 
-    // Frise : une case par période, pleine si au moins une annonce a été retenue
-    var strip = el("div", { class: "strip", role: "img", "aria-label": covered + " " + unit + "s sur " + periods.length + " avec au moins une annonce retenue" },
-      periods.map(function (p) {
-        var cls = "strip__cell" + (p.entries.length ? " is-filled" : "") + (p.current ? " is-current" : "");
-        return el("span", { class: cls, title: rangeLabel(p) + " · " + p.entries.length + " annonce" + (p.entries.length > 1 ? "s" : "") });
-      }));
-    var stripLegend = el("p", { class: "strip__legend" }, [
-      el("span", { text: fmtShortY.format(start) }),
-      el("span", { text: "aujourd'hui" }),
-    ]);
+    // Filtres par catégorie
+    var filters = el("div", { class: "filters", role: "group", "aria-label": "Filtrer " + topic.title + " par catégorie" });
+    var choices = [{ id: "", label: "Tout" }].concat(topic.categories);
+    var buttons = choices.map(function (c) {
+      var n = c.id ? allEntries.filter(function (e) { return e.category === c.id; }).length : allEntries.length;
+      var b = el("button", { type: "button", class: "filter", "aria-pressed": String(!c.id), "data-category": c.id }, [
+        document.createTextNode(c.label),
+        el("span", { class: "filter__count", text: String(n) }),
+      ]);
+      b.addEventListener("click", function () {
+        buttons.forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+        draw(c.id);
+      });
+      filters.appendChild(b);
+      return b;
+    });
 
-    // Journal : plus récent en premier, périodes vides consécutives regroupées
-    var log = el("ol", { class: "log" });
-    var emptyRun = [];
-    function flushEmpty() {
-      if (!emptyRun.length) return;
-      var first = emptyRun[emptyRun.length - 1], last = emptyRun[0];
-      var n = emptyRun.length;
-      var label = n === 1
-        ? topic.periodLabel + " du " + rangeLabel(first) + " : rien de notable retenu"
-        : n + " " + unit + "s sans annonce notable (" + fmtShort.format(first.start) + " → " + fmtShortY.format(addDays(last.end, -1)) + ")";
-      log.appendChild(el("li", { class: "log__empty", text: label }));
-      emptyRun = [];
+    var body = el("div", { class: "topic__results", "aria-live": "polite" });
+
+    function draw(category) {
+      var periods = periodsFor(topic.cadence);
+      var entries = category ? allEntries.filter(function (e) { return e.category === category; }) : allEntries;
+      entries.forEach(function (e) {
+        var d = parse(e.date);
+        for (var i = 0; i < periods.length; i++) {
+          if (d >= periods[i].start && d < periods[i].end) { periods[i].entries.push(e); return; }
+        }
+      });
+      var covered = periods.filter(function (p) { return p.entries.length; }).length;
+      var none = category ? "sans annonce « " + categoryLabel(topic, category) + " »" : "sans annonce notable";
+
+      // Frise : une case par période, pleine si au moins une annonce a été retenue
+      var strip = el("div", { class: "strip", role: "img", "aria-label": covered + " " + unit + "s sur " + periods.length + " avec au moins une annonce" },
+        periods.map(function (p) {
+          var cls = "strip__cell" + (p.entries.length ? " is-filled" : "") + (p.current ? " is-current" : "");
+          return el("span", { class: cls, title: rangeLabel(p) + " · " + p.entries.length + " annonce" + (p.entries.length > 1 ? "s" : "") });
+        }));
+      var stripLegend = el("p", { class: "strip__legend" }, [
+        el("span", { text: fmtShortY.format(start) }),
+        el("span", { text: "aujourd'hui" }),
+      ]);
+
+      // Journal : plus récent en premier, périodes vides consécutives regroupées
+      var log = el("ol", { class: "log" });
+      var emptyRun = [];
+      function flushEmpty() {
+        if (!emptyRun.length) return;
+        var first = emptyRun[emptyRun.length - 1], last = emptyRun[0];
+        var n = emptyRun.length;
+        var label = n === 1
+          ? topic.periodLabel + " du " + rangeLabel(first) + " : " + none
+          : n + " " + unit + "s " + none + " (" + fmtShort.format(first.start) + " → " + fmtShortY.format(addDays(last.end, -1)) + ")";
+        log.appendChild(el("li", { class: "log__empty", text: label }));
+        emptyRun = [];
+      }
+
+      periods.slice().reverse().forEach(function (p) {
+        if (!p.entries.length && !p.current) { emptyRun.push(p); return; }
+        flushEmpty();
+        log.appendChild(el("li", { class: "log__period" + (p.current ? " is-current" : "") }, [
+          el("h3", { class: "log__label" }, [
+            document.createTextNode(topic.periodLabel + " du " + rangeLabel(p)),
+            p.current ? el("span", { class: "log__now", text: "en cours" }) : null,
+          ]),
+          p.entries.length
+            ? el("div", { class: "log__entries" }, p.entries.map(function (e) { return entryCard(e, categoryLabel(topic, e.category)); }))
+            : el("p", { class: "log__pending", text: "Relevé en cours, rien de notable pour l'instant." }),
+        ]));
+      });
+      flushEmpty();
+
+      body.replaceChildren(strip, stripLegend, log);
     }
 
-    periods.slice().reverse().forEach(function (p) {
-      if (!p.entries.length && !p.current) { emptyRun.push(p); return; }
-      flushEmpty();
-      var period = el("li", { class: "log__period" + (p.current ? " is-current" : "") }, [
-        el("h3", { class: "log__label" }, [
-          document.createTextNode(topic.periodLabel + " du " + rangeLabel(p)),
-          p.current ? el("span", { class: "log__now", text: "en cours" }) : null,
-        ]),
-        p.entries.length
-          ? el("div", { class: "log__entries" }, p.entries.map(entryCard))
-          : el("p", { class: "log__pending", text: "Relevé en cours, rien de notable pour l'instant." }),
-      ]);
-      log.appendChild(period);
-    });
-    flushEmpty();
+    draw("");
 
     return el("section", { class: "page-block topic", id: topic.id, "aria-labelledby": "titre-" + topic.id }, [
       head,
-      el("div", { class: "section topic__body" }, [strip, stripLegend, log]),
+      el("div", { class: "section topic__body" }, [filters, body]),
     ]);
   }
 
@@ -159,6 +193,10 @@
       el("p", { class: "eyebrow", text: topic.number + " — " + topic.cadenceLabel }),
       el("h2", { class: "overview__title" }, [el("a", { class: "card__link", href: "#" + topic.id, text: topic.title })]),
       el("p", { class: "overview__count", text: entries.length + " annonces retenues" }),
+      el("ul", { class: "tags overview__cats", "aria-label": "Catégories" }, topic.categories.map(function (c) {
+        var n = entries.filter(function (e) { return e.category === c.id; }).length;
+        return el("li", { class: "tag", text: c.label + " · " + n });
+      })),
       latest ? el("p", { class: "overview__latest" }, [
         el("span", { class: "overview__latest-label", text: "Dernière : " }),
         document.createTextNode(latest.title),

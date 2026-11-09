@@ -13,6 +13,13 @@ window.VEILLE = {
       cadence: "week",
       cadenceLabel: "1 fois par semaine",
       periodLabel: "Semaine",
+      categories: [
+        { id: "versions", label: "Versions" },
+        { id: "plateformes", label: "Plateformes" },
+        { id: "architecture", label: "Architecture" },
+        { id: "ia", label: "IA & agents" },
+        { id: "marche", label: "Marché" },
+      ],
       intro:
         "Kafka, Flink, Pulsar, Fluss et les plateformes autour : les versions, les rachats et les nouvelles architectures du temps réel.",
     },
@@ -23,6 +30,11 @@ window.VEILLE = {
       cadence: "fortnight",
       cadenceLabel: "1 fois toutes les 2 semaines",
       periodLabel: "Quinzaine",
+      categories: [
+        { id: "modeles", label: "Modèles" },
+        { id: "outils", label: "Outils & agents" },
+        { id: "ecosysteme", label: "Standards & usages" },
+      ],
       intro:
         "Modèles, agents de code et outils pour les développeurs : ce qui change concrètement dans la façon d'écrire du logiciel.",
     },
@@ -33,6 +45,12 @@ window.VEILLE = {
       cadence: "quarter",
       cadenceLabel: "1 fois tous les 3 mois",
       periodLabel: "Trimestre",
+      categories: [
+        { id: "materiel", label: "Matériel" },
+        { id: "correction", label: "Correction d'erreurs" },
+        { id: "industrie", label: "Industrie" },
+        { id: "securite", label: "Post-quantique" },
+      ],
       intro:
         "Correction d'erreurs, matériel, industrie et cryptographie post-quantique : les étapes vers une machine utile.",
     },
@@ -44,6 +62,7 @@ window.VEILLE = {
     // ------------------------------------------------------------------
     {
       topic: "streaming",
+      category: "ia",
       date: "2025-12-04",
       title: "Apache Flink 2.2.0 se tourne vers l'IA",
       summary:
@@ -56,6 +75,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "marche",
       date: "2025-12-08",
       title: "IBM annonce le rachat de Confluent pour 11 milliards de dollars",
       summary:
@@ -68,6 +88,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "versions",
       date: "2026-02-17",
       title: "Kafka 4.2 : les files d'attente (share groups) passent en production",
       summary:
@@ -81,6 +102,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "versions",
       date: "2026-02-21",
       title: "Kafka 3.9.2, correctif de la dernière branche avec ZooKeeper",
       summary:
@@ -93,6 +115,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "plateformes",
       date: "2026-02-23",
       title: "Databricks Zerobus Ingest disponible pour tous",
       summary:
@@ -106,6 +129,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "architecture",
       date: "2026-03-02",
       title: "Kafka accepte le principe des topics « diskless » (KIP-1150)",
       summary:
@@ -119,6 +143,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "architecture",
       date: "2026-03-02",
       title: "Apache Fluss 0.9 : du stockage de flux pensé pour le lakehouse",
       summary:
@@ -131,6 +156,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "marche",
       date: "2026-03-17",
       title: "IBM finalise le rachat de Confluent",
       summary:
@@ -143,6 +169,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "versions",
       date: "2026-03-30",
       title: "Flink CDC 3.6.0",
       summary:
@@ -155,6 +182,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "plateformes",
       date: "2026-03-31",
       title: "Redpanda Streaming 26.1",
       summary:
@@ -167,6 +195,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "versions",
       date: "2026-04-01",
       title: "Apache Pulsar 4.2.0",
       summary:
@@ -179,6 +208,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "plateformes",
       date: "2026-04-07",
       title: "StreamNative lance Lakestream et un service Kafka natif",
       summary:
@@ -191,6 +221,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "versions",
       date: "2026-05-15",
       title: "Série de correctifs Flink (2.0.2, 2.1.2, 2.2.1)",
       summary:
@@ -204,6 +235,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "ia",
       date: "2026-05-19",
       title: "Current London : Confluent ouvre Kafka aux agents IA",
       summary:
@@ -216,6 +248,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "versions",
       date: "2026-05-22",
       title: "Apache Kafka 4.3.0",
       summary:
@@ -229,6 +262,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "versions",
       date: "2026-06-25",
       title: "Apache Flink 2.3.0",
       summary:
@@ -242,6 +276,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "architecture",
       date: "2026-07-16",
       title: "Apache Fluss devient un projet de premier niveau",
       summary:
@@ -255,6 +290,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "plateformes",
       date: "2026-07-29",
       title: "Redpanda SQL arrive sur Google Cloud",
       summary:
@@ -267,6 +303,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "architecture",
       date: "2026-09-15",
       title: "Naissance du groupe de travail Streamhouse",
       summary:
@@ -280,6 +317,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "versions",
       date: "2026-09-29",
       title: "Kafka 4.2.2",
       summary:
@@ -292,6 +330,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "ia",
       date: "2026-10-10",
       title: "Flink CDC 3.7.0 ajoute des fonctions IA aux pipelines",
       summary:
@@ -304,6 +343,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "versions",
       date: "2026-10-22",
       title: "Apache Kafka 4.4.0",
       summary:
@@ -316,6 +356,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "ia",
       date: "2026-10-30",
       title: "Flink Agents 0.4 : des agents IA dans un job Flink",
       summary:
@@ -328,6 +369,7 @@ window.VEILLE = {
     },
     {
       topic: "streaming",
+      category: "plateformes",
       date: "2026-11-04",
       title: "Current 2026 : Confluent lance Query et Lightning Tables",
       summary:
@@ -345,6 +387,7 @@ window.VEILLE = {
     // ------------------------------------------------------------------
     {
       topic: "ia",
+      category: "modeles",
       date: "2025-11-24",
       title: "Claude Opus 4.5",
       summary:
@@ -357,6 +400,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "modeles",
       date: "2025-12-01",
       title: "DeepSeek V3.2, modèle ouvert",
       summary:
@@ -369,6 +413,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "ecosysteme",
       date: "2025-12-09",
       title: "MCP et AGENTS.md rejoignent la Linux Foundation",
       summary:
@@ -381,6 +426,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "outils",
       date: "2025-12-09",
       title: "Mistral lance Devstral 2 et Mistral Vibe",
       summary:
@@ -393,6 +439,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "modeles",
       date: "2025-12-11",
       title: "OpenAI sort GPT-5.2",
       summary:
@@ -405,6 +452,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "modeles",
       date: "2025-12-17",
       title: "Gemini 3 Flash",
       summary:
@@ -417,6 +465,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "outils",
       date: "2026-02-02",
       title: "OpenAI lance l'app Codex",
       summary:
@@ -429,6 +478,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "modeles",
       date: "2026-02-05",
       title: "Le même jour : Claude Opus 4.6 et GPT-5.3-Codex",
       summary:
@@ -442,6 +492,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "modeles",
       date: "2026-02-17",
       title: "Claude Sonnet 4.6",
       summary:
@@ -454,6 +505,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "modeles",
       date: "2026-03-05",
       title: "GPT-5.4",
       summary:
@@ -466,6 +518,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "outils",
       date: "2026-04-02",
       title: "Cursor 3 met les agents au centre",
       summary:
@@ -478,6 +531,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "modeles",
       date: "2026-04-07",
       title: "Claude Mythos Preview et Project Glasswing",
       summary:
@@ -490,6 +544,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "modeles",
       date: "2026-04-23",
       title: "GPT-5.5",
       summary:
@@ -502,6 +557,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "outils",
       date: "2026-05-19",
       title: "Google I/O : Gemini 3.5 Flash et Antigravity 2.0",
       summary:
@@ -514,6 +570,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "modeles",
       date: "2026-06-09",
       title: "Claude Fable 5, la génération 5 arrive",
       summary:
@@ -526,6 +583,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "outils",
       date: "2026-07-09",
       title: "Codex fusionne avec ChatGPT sur le bureau",
       summary:
@@ -539,6 +597,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "modeles",
       date: "2026-09-01",
       title: "Claude Fable 5.1",
       summary:
@@ -551,6 +610,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "modeles",
       date: "2026-09-22",
       title: "Claude Opus 5.5 et GPT-6 sortent le même jour",
       summary:
@@ -564,6 +624,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "ecosysteme",
       date: "2026-10-06",
       title: "Enquête Stack Overflow 2026 : l'IA dans le quotidien des développeurs",
       summary:
@@ -576,6 +637,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "modeles",
       date: "2026-10-07",
       title: "Claude Haiku 5.5 complète la famille 5.5",
       summary:
@@ -588,6 +650,7 @@ window.VEILLE = {
     },
     {
       topic: "ia",
+      category: "outils",
       date: "2026-10-28",
       title: "GitHub Universe : Copilot pilote toute la livraison",
       summary:
@@ -605,6 +668,7 @@ window.VEILLE = {
     // ------------------------------------------------------------------
     {
       topic: "quantique",
+      category: "industrie",
       date: "2025-12-09",
       title: "QuEra fait le bilan d'une année record",
       summary:
@@ -617,6 +681,7 @@ window.VEILLE = {
     },
     {
       topic: "quantique",
+      category: "correction",
       date: "2026-04-14",
       title: "NVIDIA publie Ising, des modèles d'IA pour calibrer les processeurs quantiques",
       summary:
@@ -629,6 +694,7 @@ window.VEILLE = {
     },
     {
       topic: "quantique",
+      category: "industrie",
       date: "2026-05-26",
       title: "Quantinuum dépose son dossier d'introduction en bourse",
       summary:
@@ -641,6 +707,7 @@ window.VEILLE = {
     },
     {
       topic: "quantique",
+      category: "securite",
       date: "2026-06-16",
       title: "L'ANSSI exige la cryptographie post-quantique dès 2027",
       summary:
@@ -654,6 +721,7 @@ window.VEILLE = {
     },
     {
       topic: "quantique",
+      category: "correction",
       date: "2026-09-08",
       title: "Quantinuum valide son architecture de correction d'erreurs Helix",
       summary:
@@ -667,6 +735,7 @@ window.VEILLE = {
     },
     {
       topic: "quantique",
+      category: "materiel",
       date: "2026-11-06",
       title: "IBM installe un Quantum System Two à Chicago",
       summary:
