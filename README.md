@@ -1,5 +1,7 @@
 # Veille technologique
 
+En ligne : https://tmcrn.github.io/veilleCDWFS/
+
 Site statique de veille sur trois sujets, chacun à son rythme, depuis le 20 novembre 2025 :
 
 | Sujet | Rythme |
@@ -43,4 +45,4 @@ Le site range l'annonce dans sa semaine, quinzaine ou trimestre, met à jour la 
 python3 -m http.server 4321
 ```
 
-Puis ouvrir http://localhost:4321. Aucune dépendance ni étape de build : déployable tel quel sur GitHub Pages ou Vercel.
+Puis ouvrir http://localhost:4321. Aucune dépendance ni étape de build. Le site est publié par GitHub Pages depuis la branche `main` : chaque push le met à jour en une minute environ.
