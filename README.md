@@ -32,12 +32,21 @@ Tout le contenu est dans `assets/js/data.js`. Ajouter un objet dans `entries` :
   title: "…",
   summary: "…",
   takeaway: "…",                 // « À retenir », facultatif
+  signal: "…",                   // facultatif : en fait un signal faible (pourquoi)
   tags: ["Kafka"],
   sources: [{ label: "kafka.apache.org", url: "https://…" }],
 }
 ```
 
 Le site range l'annonce dans sa semaine, quinzaine ou trimestre, met à jour la frise et la date du prochain relevé.
+
+## Organisation de la page
+
+Même fonctionnement que l'ancienne page Veille du portfolio : écran de transition, sections qui apparaissent l'une après l'autre et **un onglet par sujet** (Sujet N, Pourquoi ce sujet ?, signaux faibles, faits marquants, sources utilisées). Suivent :
+
+- **Tableau de bord** : date prévue, réalisé, intérêt, horizon (H1/H2/H3), nombre de signaux faibles et d'améliorations, fréquence, régularité, statut. Tout est calculé depuis `data.js` ; seuls `interest` et `horizon` se règlent à la main dans `topics`.
+- **Événements** : liste `events` (titre, type, date, heure, lieu, sujets, lien).
+- **Améliorations** : liste `improvements`, une ligne par changement de la démarche.
 
 ## Lancer en local
 

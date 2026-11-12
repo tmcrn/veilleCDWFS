@@ -39,3 +39,21 @@
     if (target) observer.observe(target);
   });
 })();
+
+// Écran de bienvenue et apparition des sections, comme sur l'ancienne page Veille du portfolio
+(function () {
+  var welcome = document.querySelector(".welcome-screen");
+  var sections = document.querySelectorAll(".intro, .page-block");
+  // On force le calcul du style de départ (écran visible), sinon la transition de sortie ne se joue pas
+  if (welcome) { void welcome.offsetHeight; welcome.classList.add("hide"); }
+  setTimeout(function () {
+    sections.forEach(function (section, index) {
+      setTimeout(function () { section.classList.add("show"); }, index * 60);
+    });
+  }, 150);
+
+  // Retour arrière restauré depuis le cache : l'écran reste masqué
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted && welcome) welcome.classList.add("hide");
+  });
+})();

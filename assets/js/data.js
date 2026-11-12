@@ -11,6 +11,9 @@ window.VEILLE = {
       number: "01",
       title: "Real-time data streaming",
       cadence: "week",
+      frequency: "Hebdomadaire",
+      horizon: "H1",
+      interest: 80,
       cadenceLabel: "1 fois par semaine",
       periodLabel: "Semaine",
       categories: [
@@ -30,6 +33,9 @@ window.VEILLE = {
       number: "02",
       title: "IA générative dans le dev",
       cadence: "fortnight",
+      frequency: "Bimensuelle",
+      horizon: "H1",
+      interest: 90,
       cadenceLabel: "1 fois toutes les 2 semaines",
       periodLabel: "Quinzaine",
       categories: [
@@ -47,6 +53,9 @@ window.VEILLE = {
       number: "03",
       title: "Ordinateur quantique",
       cadence: "quarter",
+      frequency: "Trimestrielle",
+      horizon: "H3",
+      interest: 60,
       cadenceLabel: "1 fois tous les 3 mois",
       periodLabel: "Trimestre",
       categories: [
@@ -127,6 +136,7 @@ window.VEILLE = {
       summary:
         "Service serverless qui écrit des événements directement dans des tables Delta, par gRPC ou REST, sans passer par un bus de messages comme Kafka. Disponible sur AWS et Azure.",
       takeaway: "Pour un flux qui n'a qu'une seule destination (le lakehouse), Kafka n'est plus forcément nécessaire.",
+      signal: "Un grand acteur de la donnée propose d'écrire en temps réel sans bus de messages : Kafka pourrait perdre une partie de ses usages les plus simples.",
       tags: ["Databricks", "Ingestion", "Lakehouse"],
       sources: [
         { label: "Databricks", url: "https://www.databricks.com/en/blog/announcing-general-availability-zerobus-ingest-part-lakeflow-connect" },
@@ -141,6 +151,7 @@ window.VEILLE = {
       summary:
         "Le vote est passé avec 9 voix contraignantes : les topics pourront à terme écrire directement dans un stockage objet (S3) au lieu des disques des brokers. Il s'agit d'une orientation : les KIP de mise en œuvre (1163 et 1164) restent à voter.",
       takeaway: "À terme, beaucoup moins de coûts de réplication entre zones dans le cloud. Pas encore dans une version publiée.",
+      signal: "Kafka envisage d'écrire directement sur du stockage objet : un changement d'architecture encore à l'état de proposition, qui pourrait redéfinir son coût dans le cloud.",
       tags: ["Kafka", "Stockage objet", "KIP"],
       sources: [
         { label: "Aiven", url: "https://aiven.io/blog/kip-1150-accepted-and-the-road-ahead" },
@@ -155,6 +166,7 @@ window.VEILLE = {
       summary:
         "Deuxième version de Fluss dans l'incubateur Apache. Le projet, venu d'Alibaba, propose un stockage de flux en colonnes qui se synchronise avec le lakehouse, conçu pour fonctionner avec Flink.",
       takeaway: "Un concurrent sérieux à Kafka pour les usages analytiques.",
+      signal: "Un projet encore jeune propose une alternative à Kafka pour l'analytique. Peu utilisé aujourd'hui, à surveiller.",
       tags: ["Fluss", "Flink", "Lakehouse"],
       sources: [
         { label: "fluss.apache.org", url: "https://fluss.apache.org/blog/releases/0.9/" },
@@ -316,6 +328,7 @@ window.VEILLE = {
       summary:
         "Aiven, Confluent, Redpanda, StreamNative et Ververica s'associent pour définir un standard neutre de « streamhouse » : un flux et une table lakehouse qui ne font qu'un.",
       takeaway: "Des concurrents s'accordent sur une architecture commune, c'est le signal à retenir.",
+      signal: "Des concurrents directs travaillent ensemble sur un même standard : le flux et la table lakehouse pourraient fusionner.",
       tags: ["Streamhouse", "Standard"],
       sources: [
         { label: "Confluent", url: "https://www.confluent.io/blog/aiven-confluent-redpanda-streamnative-and-ververica-form-streamhouse-working-group/" },
@@ -369,6 +382,7 @@ window.VEILLE = {
       summary:
         "Préversion qui ajoute les sous-agents : un agent peut déléguer une tâche à un autre agent du même job ou à un service externe. L'équipe annonce que ce sera la dernière version avant la 1.0.",
       takeaway: "Des agents IA pilotés par des événements, avec la tolérance aux pannes de Flink.",
+      signal: "Version 0.x d'un sous-projet encore expérimental : les agents IA pourraient devenir des traitements de flux comme les autres.",
       tags: ["Flink", "Agents", "IA"],
       sources: [
         { label: "flink.apache.org", url: "https://flink.apache.org/2026/10/30/apache-flink-agents-0.4.0-release-announcement/" },
@@ -426,6 +440,7 @@ window.VEILLE = {
       summary:
         "Création de l'Agentic AI Foundation. Anthropic y confie le Model Context Protocol (MCP), OpenAI le format AGENTS.md et Block l'agent goose.",
       takeaway: "Les standards des agents de code passent sous une gouvernance neutre.",
+      signal: "Deux formats récents passent sous gouvernance neutre : ils pourraient devenir les standards communs des agents de code.",
       tags: ["MCP", "Standard", "Open source"],
       sources: [
         { label: "Linux Foundation", url: "https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation" },
@@ -478,6 +493,7 @@ window.VEILLE = {
       summary:
         "Application de bureau pour piloter plusieurs agents de code en parallèle, chacun dans sa copie du dépôt.",
       takeaway: "On passe d'un assistant dans l'éditeur à la supervision de plusieurs agents.",
+      signal: "Le développeur ne tape plus le code, il supervise plusieurs agents en parallèle : un changement de métier encore à ses débuts.",
       tags: ["OpenAI", "Codex", "Agents"],
       sources: [
         { label: "OpenAI", url: "https://openai.com/index/introducing-the-codex-app/" },
@@ -545,6 +561,7 @@ window.VEILLE = {
       summary:
         "Anthropic annonce un modèle très avancé en sécurité informatique, réservé à des partenaires qui l'utilisent pour trouver et corriger des failles dans des logiciels critiques. Pas de disponibilité générale prévue.",
       takeaway: "Un modèle jugé trop puissant pour une sortie publique : une première.",
+      signal: "Pour la première fois, un modèle est réservé à quelques partenaires pour des raisons de sécurité. L'accès aux meilleurs modèles pourrait devenir contrôlé.",
       tags: ["Anthropic", "Sécurité"],
       sources: [
         { label: "Anthropic", url: "https://www.anthropic.com/glasswing" },
@@ -697,6 +714,7 @@ window.VEILLE = {
       summary:
         "Famille de modèles open source qui automatise l'étalonnage des qubits et la correction d'erreurs. Les modèles de décodage seraient jusqu'à 2,5 fois plus rapides que les méthodes classiques, selon NVIDIA. IQM les utilise déjà pour calibrer ses processeurs.",
       takeaway: "Les GPU et l'IA deviennent des outils indispensables pour faire fonctionner un ordinateur quantique.",
+      signal: "L'IA et les GPU s'invitent dans le fonctionnement même des machines quantiques : un rapprochement encore peu visible.",
       tags: ["NVIDIA", "PsiQuantum", "IA"],
       sources: [
         { label: "NVIDIA", url: "https://nvidianews.nvidia.com/news/nvidia-launches-ising-the-worlds-first-open-ai-models-to-accelerate-the-path-to-useful-quantum-computers" },
@@ -740,6 +758,7 @@ window.VEILLE = {
       summary:
         "Architecture démontrée sur Helios, son processeur à ions piégés de 98 qubits. Elle combine plusieurs codes correcteurs pour réduire le nombre de qubits physiques nécessaires. Elle servira de base à la future machine Apollo.",
       takeaway: "La correction d'erreurs devient un sujet d'architecture, plus seulement de physique.",
+      signal: "La correction d'erreurs passe de l'expérience de labo à un choix d'architecture : une étape discrète vers une machine utile.",
       tags: ["Quantinuum", "Correction d'erreurs"],
       sources: [
         { label: "Quantinuum", url: "https://www.quantinuum.com/blog/quantinuums-fault-tolerance-advantage-turning-quantum-reliability-into-commercial-usefulness" },
@@ -758,6 +777,30 @@ window.VEILLE = {
       sources: [
         { label: "UChicago News", url: "https://news.uchicago.edu/story/ibms-most-advanced-quantum-computer-unveiled-uchicagos-hyde-park-labs" },
       ],
+    },
+  ],
+
+  // Améliorations apportées à la démarche de veille (colonne « Nb. améliorations » du tableau de bord).
+  // `topic` vide : l'amélioration concerne les trois sujets.
+  improvements: [
+    { date: "2026-11-09", topic: "", text: "Catégories par sujet, avec des filtres pour retrouver une annonce." },
+    { date: "2026-11-09", topic: "", text: "Sources officielles (notes de version, communiqués) à la place des sources secondaires." },
+    { date: "2026-11-09", topic: "", text: "« Pourquoi ce sujet ? » et méthode de veille, repris de l'ancienne page du portfolio." },
+    { date: "2026-11-12", topic: "", text: "Signaux faibles repérés dans les annonces et comptés dans un tableau de bord." },
+    { date: "2026-11-12", topic: "", text: "Un onglet par sujet, comme sur l'ancienne page Veille du portfolio." },
+  ],
+
+  // Conférences, salons, tables rondes… auxquels je m'inscris.
+  events: [
+    {
+      title: "AWS re:Invent 2026",
+      type: "Conférence",
+      date: "2026-11-30",
+      time: "08:00",
+      place: "Las Vegas",
+      topics: ["streaming", "ia"],
+      summary: "La grande conférence annuelle d'AWS : annonces cloud, services de streaming (Kinesis, MSK) et IA générative pour les développeurs.",
+      url: "https://reinvent.awsevents.com/",
     },
   ],
 };

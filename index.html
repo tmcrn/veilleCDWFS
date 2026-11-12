@@ -16,6 +16,7 @@
       try { saved = localStorage.getItem('theme'); } catch (e) {}
       var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+      document.documentElement.classList.add('js');
     })();
   </script>
 
@@ -29,6 +30,7 @@
   <script src="assets/js/site.js" defer></script>
 </head>
 <body>
+  <div class="welcome-screen" aria-hidden="true"></div>
   <a class="skip-link" href="#contenu">Aller au contenu</a>
 
   <header class="site-header">
@@ -36,9 +38,9 @@
       <nav class="nav" aria-label="Navigation principale">
         <ul>
           <li><a href="#accueil">Accueil</a></li>
-          <li><a href="#streaming">Streaming</a></li>
-          <li><a href="#ia">IA générative</a></li>
-          <li><a href="#quantique">Quantique</a></li>
+          <li><a href="#sujets">Sujets</a></li>
+          <li><a href="#tableau">Tableau de bord</a></li>
+          <li><a href="#evenements">Événements</a></li>
           <li><a href="#methode">Méthode</a></li>
         </ul>
       </nav>
@@ -55,11 +57,37 @@
       <ul class="overview" data-overview aria-label="Les trois sujets"></ul>
     </section>
 
-    <div data-topics></div>
+    <section class="page-block" id="sujets" aria-labelledby="titre-sujets">
+      <div class="page-head">
+        <p class="eyebrow">01 — 03 · Sujets</p>
+        <h2 id="titre-sujets">Mes trois sujets</h2>
+        <p>Un onglet par sujet : pourquoi je le suis, les signaux faibles repérés, les faits marquants relevés à chaque période et les sources utilisées.</p>
+      </div>
+      <div class="veille-tabs" role="tablist" aria-label="Sujets de veille" data-tabs></div>
+      <div class="section topic__body" data-topics></div>
+    </section>
+
+    <section class="page-block" id="tableau" aria-labelledby="titre-tableau">
+      <div class="page-head">
+        <p class="eyebrow">04 — Suivi</p>
+        <h2 id="titre-tableau">Tableau de bord</h2>
+        <p>Les indicateurs de suivi de ma veille, calculés à partir des relevés : fréquence, régularité, signaux faibles et améliorations.</p>
+      </div>
+      <div class="section dashboard" data-dashboard></div>
+    </section>
+
+    <section class="page-block" id="evenements" aria-labelledby="titre-evenements">
+      <div class="page-head">
+        <p class="eyebrow">05 — Agenda</p>
+        <h2 id="titre-evenements">Événements</h2>
+        <p>Conférences, salons et tables rondes auxquels je m'inscris cette année.</p>
+      </div>
+      <ul class="section events" data-events></ul>
+    </section>
 
     <section class="page-block" id="methode" aria-labelledby="titre-methode">
       <div class="page-head">
-        <p class="eyebrow">04 — Organisation</p>
+        <p class="eyebrow">06 — Organisation</p>
         <h2 id="titre-methode">Ma méthode de veille</h2>
         <p>Chaque sujet a son rythme, mais la démarche reste la même : collecter, vérifier, résumer, archiver.</p>
       </div>

@@ -1,5 +1,7 @@
-// Construit la page à partir de data.js : chaque annonce est rangée dans sa période
-// (semaine, quinzaine ou trimestre selon le sujet), les périodes sans annonce sont regroupées.
+// Construit la page à partir de data.js, sur le modèle de l'ancienne page Veille du portfolio :
+// un onglet par sujet (Pourquoi ce sujet ?, signaux faibles, faits marquants, sources utilisées),
+// puis le tableau de bord, les événements et la méthode.
+// Chaque annonce est rangée dans sa période (semaine, quinzaine ou trimestre selon le sujet).
 
 (function () {
   var data = window.VEILLE;
@@ -22,6 +24,10 @@
   var fmtShort = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", timeZone: "UTC" });
   var fmtShortY = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
   var fmtDay = new Intl.DateTimeFormat("fr-FR", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
+  var fmtNum = new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" });
+  var fmtEvent = new Intl.DateTimeFormat("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+
+  function plural(n, word) { return n + " " + word + (n > 1 ? "s" : ""); }
 
   // Périodes du 20 novembre à aujourd'hui. `end` est exclusif.
   function periodsFor(cadence) {
@@ -49,13 +55,51 @@
       if (k === "text") node.textContent = attrs[k];
       else node.setAttribute(k, attrs[k]);
     });
-    (children || []).forEach(function (c) { if (c) node.appendChild(c); });
+    (children || []).forEach(function (c) { if (c) node.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
     return node;
   }
 
   function rangeLabel(p) {
     var last = addDays(p.end, -1);
     return fmtShort.format(p.start) + " → " + fmtShortY.format(last);
+  }
+
+  function entriesOf(topic) {
+    return data.entries
+      .filter(function (e) { return e.topic === topic.id; })
+      .sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+  }
+
+  function categoryLabel(topic, id) {
+    var c = topic.categories.filter(function (c) { return c.id === id; })[0];
+    return c ? c.label : "";
+  }
+
+  function improvementsOf(topic) {
+    return (data.improvements || []).filter(function (i) { return !i.topic || i.topic === topic.id; });
+  }
+
+  // Indicateurs d'un sujet, partagés par l'onglet et le tableau de bord
+  function kpiOf(topic) {
+    var entries = entriesOf(topic);
+    var periods = periodsFor(topic.cadence);
+    var current = periods[periods.length - 1];
+    var previous = periods[periods.length - 2] || current;
+    var latest = entries[0];
+    entries.forEach(function (e) {
+      var d = parse(e.date);
+      periods.forEach(function (p) { if (d >= p.start && d < p.end) p.entries.push(e); });
+    });
+    return {
+      entries: entries,
+      signals: entries.filter(function (e) { return e.signal; }),
+      improvements: improvementsOf(topic),
+      periods: periods,
+      covered: periods.filter(function (p) { return p.entries.length; }).length,
+      next: current.end,
+      // Relevé à jour : au moins une annonce dans la période en cours ou la précédente
+      done: !!latest && parse(latest.date) >= previous.start,
+    };
   }
 
   function entryCard(e, category) {
@@ -66,45 +110,80 @@
       return el("li", null, [el("a", { href: s.url, target: "_blank", rel: "noopener noreferrer", text: s.label })]);
     }));
 
-    return el("article", { class: "entry" }, [
+    return el("article", { class: "entry" + (e.signal ? " is-signal" : "") }, [
       el("p", { class: "eyebrow entry__eyebrow" }, [
         el("time", { datetime: e.date, text: fmtLong.format(parse(e.date)) }),
         category ? el("span", { class: "entry__category", text: category }) : null,
+        e.signal ? el("span", { class: "entry__signal", text: "Signal faible" }) : null,
       ]),
-      el("h4", { class: "entry__title", text: e.title }),
+      el("h5", { class: "entry__title", text: e.title }),
       el("p", { class: "entry__summary", text: e.summary }),
-      e.takeaway ? el("p", { class: "entry__takeaway" }, [el("strong", { text: "À retenir · " }), document.createTextNode(e.takeaway)]) : null,
+      e.takeaway ? el("p", { class: "entry__takeaway" }, [el("strong", { text: "À retenir · " }), e.takeaway]) : null,
       el("div", { class: "entry__meta" }, [tags, el("div", { class: "entry__sources-wrap" }, [el("span", { class: "entry__sources-label", text: "Sources" }), sources])]),
     ]);
   }
 
-  function categoryLabel(topic, id) {
-    var c = topic.categories.filter(function (c) { return c.id === id; })[0];
-    return c ? c.label : "";
+  // Signaux faibles : même présentation que les « faits marquants » de l'ancienne page
+  function signalsBlock(topic, kpi) {
+    if (!kpi.signals.length) return null;
+    return el("div", { class: "veille-findings" }, [
+      el("h3", { text: "Signaux faibles · " + kpi.signals.length }),
+      el("div", { class: "findings-list" }, kpi.signals.map(function (e) {
+        return el("div", { class: "finding-item" }, [
+          el("div", { class: "finding-dot", "aria-hidden": "true" }),
+          el("div", null, [
+            el("p", { class: "eyebrow" }, [el("time", { datetime: e.date, text: fmtLong.format(parse(e.date)) })]),
+            el("h4", { text: e.title }),
+            el("p", { text: e.signal }),
+          ]),
+        ]);
+      })),
+    ]);
   }
 
-  function renderTopic(topic) {
-    var allEntries = data.entries
-      .filter(function (e) { return e.topic === topic.id; })
-      .sort(function (a, b) { return a.date < b.date ? 1 : -1; });
-    var unit = topic.periodLabel.toLowerCase();
-    var periodsCount = periodsFor(topic.cadence).length;
-    var current = periodsFor(topic.cadence).pop();
+  // Sources utilisées : un lien par site, le plus cité en premier
+  function sourcesBlock(kpi) {
+    var hosts = {};
+    kpi.entries.forEach(function (e) {
+      e.sources.forEach(function (s) {
+        var host = new URL(s.url).hostname.replace(/^www\./, "");
+        hosts[host] = (hosts[host] || 0) + 1;
+      });
+    });
+    var list = Object.keys(hosts).sort(function (a, b) { return hosts[b] - hosts[a] || (a < b ? -1 : 1); });
+    return el("div", { class: "veille-sources" }, [
+      el("h3", { text: "Sources utilisées" }),
+      el("ul", { class: "sources-grid" }, list.map(function (h) {
+        return el("li", null, [el("a", { class: "source-item", href: "https://" + h, target: "_blank", rel: "noopener noreferrer" }, [
+          el("span", { "aria-hidden": "true", class: "source-item__icon", text: "↗" }),
+          el("span", { class: "source-item__name", text: h }),
+          el("span", { class: "source-item__count", text: "×" + hosts[h] }),
+        ])]);
+      })),
+    ]);
+  }
 
-    // En-tête du sujet
-    var head = el("div", { class: "page-head" }, [
-      el("p", { class: "eyebrow", text: topic.number + " — " + topic.cadenceLabel }),
+  function renderTopic(topic, index) {
+    var kpi = kpiOf(topic);
+    var allEntries = kpi.entries;
+    var unit = topic.periodLabel.toLowerCase();
+
+    // En-tête du sujet (étiquette « Sujet N », titre, période)
+    var head = el("div", { class: "veille-block-header" }, [
+      el("span", { class: "veille-tag", text: "Sujet " + (index + 1) }),
       el("h2", { id: "titre-" + topic.id, text: topic.title }),
-      el("p", { text: topic.intro }),
-      topic.why ? el("div", { class: "topic__why" }, [
-        el("h3", { text: "Pourquoi ce sujet ?" }),
-        el("p", { text: topic.why }),
-      ]) : null,
+      el("p", { class: "veille-period", text: "Depuis le " + fmtLong.format(start) + " · " + topic.cadenceLabel }),
+      el("p", { class: "veille-intro", text: topic.intro }),
       el("p", { class: "topic__status" }, [
-        el("span", { class: "badge", text: "Prochain relevé : " + fmtDay.format(current.end) }),
-        el("span", { class: "topic__count", text: allEntries.length + " annonces · " + periodsCount + " " + unit + "s suivi" + (topic.cadence === "fortnight" ? "e" : "") + "s" }),
+        el("span", { class: "badge", text: "Prochain relevé : " + fmtDay.format(kpi.next) }),
+        el("span", { class: "topic__count", text: plural(allEntries.length, "annonce") + " · " + plural(kpi.signals.length, "signal faible").replace("signal faibles", "signaux faibles") + " · " + plural(kpi.periods.length, unit) + " suivi" + (topic.cadence === "fortnight" ? "e" : "") + (kpi.periods.length > 1 ? "s" : "") }),
       ]),
     ]);
+
+    var why = topic.why ? el("div", { class: "veille-why" }, [
+      el("h3", { text: "Pourquoi ce sujet ?" }),
+      el("p", { text: topic.why }),
+    ]) : null;
 
     // Filtres par catégorie
     var filters = el("div", { class: "filters", role: "group", "aria-label": "Filtrer " + topic.title + " par catégorie" });
@@ -112,7 +191,7 @@
     var buttons = choices.map(function (c) {
       var n = c.id ? allEntries.filter(function (e) { return e.category === c.id; }).length : allEntries.length;
       var b = el("button", { type: "button", class: "filter", "aria-pressed": String(!c.id), "data-category": c.id }, [
-        document.createTextNode(c.label),
+        c.label,
         el("span", { class: "filter__count", text: String(n) }),
       ]);
       b.addEventListener("click", function () {
@@ -166,8 +245,8 @@
         if (!p.entries.length && !p.current) { emptyRun.push(p); return; }
         flushEmpty();
         log.appendChild(el("li", { class: "log__period" + (p.current ? " is-current" : "") }, [
-          el("h3", { class: "log__label" }, [
-            document.createTextNode(topic.periodLabel + " du " + rangeLabel(p)),
+          el("h4", { class: "log__label" }, [
+            topic.periodLabel + " du " + rangeLabel(p),
             p.current ? el("span", { class: "log__now", text: "en cours" }) : null,
           ]),
           p.entries.length
@@ -182,47 +261,220 @@
 
     draw("");
 
-    return el("section", { class: "page-block topic", id: topic.id, "aria-labelledby": "titre-" + topic.id }, [
-      head,
-      el("div", { class: "section topic__body" }, [filters, body]),
+    var findings = el("div", { class: "veille-findings veille-log" }, [
+      el("h3", { text: "Faits marquants" }),
+      filters,
+      body,
     ]);
+
+    return el("div", {
+      class: "tab-content veille-block",
+      id: topic.id,
+      role: "tabpanel",
+      "aria-labelledby": "onglet-" + topic.id,
+      tabindex: "-1",
+    }, [head, why, signalsBlock(topic, kpi), findings, sourcesBlock(kpi)]);
   }
+
+  // Onglets (fonctionnement de l'ancienne page Veille : un seul sujet affiché à la fois)
+  var tabsRoot = document.querySelector("[data-tabs]");
+  var topicsRoot = document.querySelector("[data-topics]");
+  var tabButtons = [];
+  var panels = [];
+
+  function activate(id, focusTab) {
+    tabButtons.forEach(function (b) {
+      var on = b.dataset.tab === id;
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-selected", String(on));
+      b.tabIndex = on ? 0 : -1;
+      if (on && focusTab) b.focus();
+    });
+    panels.forEach(function (p) {
+      var on = p.id === id;
+      p.classList.toggle("active", on);
+      p.hidden = !on;
+    });
+  }
+
+  data.topics.forEach(function (t, i) {
+    var b = el("button", {
+      type: "button",
+      class: "tab-btn",
+      role: "tab",
+      id: "onglet-" + t.id,
+      "aria-controls": t.id,
+      "data-tab": t.id,
+    }, [el("span", { class: "tab-btn__num", text: t.number }), t.title]);
+    b.addEventListener("click", function () {
+      activate(t.id);
+      history.replaceState(null, "", "#" + t.id);
+    });
+    tabsRoot.appendChild(b);
+    tabButtons.push(b);
+    var panel = renderTopic(t, i);
+    topicsRoot.appendChild(panel);
+    panels.push(panel);
+  });
+
+  // Flèches gauche/droite entre les onglets
+  tabsRoot.addEventListener("keydown", function (e) {
+    var i = tabButtons.indexOf(document.activeElement);
+    if (i < 0) return;
+    var n = tabButtons.length;
+    var to = e.key === "ArrowRight" ? (i + 1) % n : e.key === "ArrowLeft" ? (i - 1 + n) % n : e.key === "Home" ? 0 : e.key === "End" ? n - 1 : -1;
+    if (to < 0) return;
+    e.preventDefault();
+    activate(tabButtons[to].dataset.tab, true);
+  });
+
+  // Lien vers un sujet (#streaming…) : ouvre son onglet puis y descend
+  function openFromHash() {
+    var id = location.hash.slice(1);
+    if (!panels.some(function (p) { return p.id === id; })) return false;
+    activate(id);
+    document.getElementById("sujets").scrollIntoView();
+    return true;
+  }
+  window.addEventListener("hashchange", openFromHash);
+  activate(data.topics[0].id);
 
   // Cartes de l'accueil, une par sujet
   function overviewCard(topic) {
-    var entries = data.entries.filter(function (e) { return e.topic === topic.id; })
-      .sort(function (a, b) { return a.date < b.date ? 1 : -1; });
-    var latest = entries[0];
+    var kpi = kpiOf(topic);
+    var latest = kpi.entries[0];
     return el("li", { class: "card overview__card" }, [
       el("p", { class: "eyebrow", text: topic.number + " — " + topic.cadenceLabel }),
       el("h2", { class: "overview__title" }, [el("a", { class: "card__link", href: "#" + topic.id, text: topic.title })]),
-      el("p", { class: "overview__count", text: entries.length + " annonces retenues" }),
+      el("p", { class: "overview__count", text: plural(kpi.entries.length, "annonce") + " · " + kpi.signals.length + " signa" + (kpi.signals.length > 1 ? "ux" : "l") + " faible" + (kpi.signals.length > 1 ? "s" : "") }),
       el("ul", { class: "tags overview__cats", "aria-label": "Catégories" }, topic.categories.map(function (c) {
-        var n = entries.filter(function (e) { return e.category === c.id; }).length;
+        var n = kpi.entries.filter(function (e) { return e.category === c.id; }).length;
         return el("li", { class: "tag", text: c.label + " · " + n });
       })),
       latest ? el("p", { class: "overview__latest" }, [
         el("span", { class: "overview__latest-label", text: "Dernière : " }),
-        document.createTextNode(latest.title),
+        latest.title,
       ]) : null,
     ]);
   }
 
   var overview = document.querySelector("[data-overview]");
-  var topicsRoot = document.querySelector("[data-topics]");
-  data.topics.forEach(function (t) {
-    overview.appendChild(overviewCard(t));
-    topicsRoot.appendChild(renderTopic(t));
-  });
+  data.topics.forEach(function (t) { overview.appendChild(overviewCard(t)); });
+
+  // --- Tableau de bord ---------------------------------------------------------
+
+  function renderDashboard() {
+    var root = document.querySelector("[data-dashboard]");
+    if (!root) return;
+    var kpis = data.topics.map(kpiOf);
+    var signals = kpis.reduce(function (n, k) { return n + k.signals.length; }, 0);
+    var improvements = (data.improvements || []).length;
+    var interest = Math.round(data.topics.reduce(function (n, t) { return n + (t.interest || 0); }, 0) / data.topics.length);
+
+    var tiles = el("ul", { class: "kpi-tiles" }, [
+      ["Signaux faibles identifiés", signals],
+      ["Améliorations apportées", improvements],
+      ["Annonces retenues", data.entries.length],
+      ["Intérêt moyen de la veille", interest + " %"],
+    ].map(function (t) {
+      return el("li", { class: "card kpi-tile" }, [
+        el("p", { class: "kpi-tile__value", text: String(t[1]) }),
+        el("p", { class: "kpi-tile__label", text: t[0] }),
+      ]);
+    }));
+
+    var cols = ["Sujet", "Date prévue", "Réalisé", "Intérêt", "Horizon", "Nb. signaux faibles", "Nb. améliorations", "Fréquence", "Régularité", "Statut"];
+    var rows = data.topics.map(function (t, i) {
+      var k = kpis[i];
+      return el("tr", null, [
+        el("th", { scope: "row" }, [el("a", { href: "#" + t.id, text: t.title })]),
+        el("td", { text: fmtNum.format(k.next) }),
+        el("td", { text: k.done ? "Oui" : "Non" }),
+        el("td", { text: t.interest + " %" }),
+        el("td", { text: t.horizon }),
+        el("td", { class: "num", text: String(k.signals.length) }),
+        el("td", { class: "num", text: String(k.improvements.length) }),
+        el("td", { text: t.frequency || t.cadenceLabel }),
+        el("td", { text: k.covered + " / " + k.periods.length + " " + t.periodLabel.toLowerCase() + "s" }),
+        el("td", null, [el("span", { class: "status" + (k.done ? " is-ok" : " is-late"), text: k.done ? "✓ À jour" : "En retard" })]),
+      ]);
+    });
+    rows.push(el("tr", { class: "kpi-table__total" }, [
+      el("th", { scope: "row", text: "Total" }),
+      el("td"), el("td"),
+      el("td", { text: interest + " %" }),
+      el("td", { text: "H1 / H3" }),
+      el("td", { class: "num", text: String(signals) }),
+      el("td", { class: "num", text: String(improvements) }),
+      el("td"), el("td"), el("td"),
+    ]));
+
+    var table = el("div", { class: "kpi-table-wrap", tabindex: "0", role: "region", "aria-label": "Indicateurs par sujet" }, [
+      el("table", { class: "kpi-table" }, [
+        el("thead", null, [el("tr", null, cols.map(function (c) { return el("th", { scope: "col", text: c }); }))]),
+        el("tbody", null, rows),
+      ]),
+    ]);
+
+    var legend = el("p", { class: "kpi-legend", text: "Horizon : H1 = impact dans l'année, H2 = dans 2 à 3 ans, H3 = au-delà. Réalisé : au moins une annonce retenue dans la période en cours ou la précédente. Régularité : périodes avec au moins une annonce." });
+
+    var log = el("div", { class: "veille-findings" }, [
+      el("h3", { text: "Améliorations apportées" }),
+      el("ol", { class: "improvements" }, (data.improvements || []).slice().reverse().map(function (i) {
+        return el("li", null, [el("time", { class: "eyebrow", datetime: i.date, text: fmtNum.format(parse(i.date)) }), el("span", { text: i.text })]);
+      })),
+    ]);
+
+    root.replaceChildren(tiles, table, legend, log);
+  }
+
+  // --- Événements --------------------------------------------------------------
+
+  function renderEvents() {
+    var root = document.querySelector("[data-events]");
+    if (!root) return;
+    var events = (data.events || []).slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    root.replaceChildren.apply(root, events.map(function (ev) {
+      var d = parse(ev.date);
+      var days = Math.round((d - today) / DAY);
+      var when = days > 1 ? "dans " + days + " jours" : days === 1 ? "demain" : days === 0 ? "aujourd'hui" : "passé";
+      var topicNames = ev.topics.map(function (id) {
+        return data.topics.filter(function (t) { return t.id === id; })[0].title;
+      });
+      return el("li", { class: "card event" }, [
+        el("div", { class: "event__date" }, [
+          el("span", { class: "event__day", text: String(d.getUTCDate()) }),
+          el("span", { class: "event__month", text: new Intl.DateTimeFormat("fr-FR", { month: "short", timeZone: "UTC" }).format(d) }),
+        ]),
+        el("div", { class: "event__body" }, [
+          el("p", { class: "eyebrow event__meta" }, [
+            el("span", { class: "entry__category", text: ev.type }),
+            el("time", { datetime: ev.date + "T" + ev.time, text: fmtEvent.format(d) + " · " + ev.time.replace(":", "h") }),
+            ev.place ? el("span", { text: ev.place }) : null,
+          ]),
+          el("h3", { class: "event__title" }, [el("a", { class: "card__link", href: ev.url, target: "_blank", rel: "noopener noreferrer", text: ev.title })]),
+          el("p", { class: "event__summary", text: ev.summary }),
+          el("p", { class: "event__foot" }, [
+            el("span", { class: "badge", text: when }),
+            el("span", { class: "topic__count", text: "Sujets : " + topicNames.join(", ") }),
+          ]),
+        ]),
+      ]);
+    }));
+  }
+
+  renderDashboard();
+  renderEvents();
 
   var total = data.entries.length;
+  var signalCount = data.entries.filter(function (e) { return e.signal; }).length;
   var sourceCount = data.entries.reduce(function (n, e) { return n + e.sources.length; }, 0);
   var latestDate = data.entries.map(function (e) { return e.date; }).sort().pop();
   document.querySelector("[data-stats]").textContent =
-    "Depuis le " + fmtLong.format(start) + " · " + total + " annonces · " + sourceCount + " sources · dernière annonce le " + fmtLong.format(parse(latestDate));
+    "Depuis le " + fmtLong.format(start) + " · " + total + " annonces · " + signalCount + " signaux faibles · " + sourceCount + " sources · dernière annonce le " + fmtLong.format(parse(latestDate));
 
-  // Lien direct vers un sujet (#streaming…) : la section n'existait pas encore au chargement
-  if (location.hash) {
+  // Lien direct vers une section : elle n'existait pas encore au chargement
+  if (location.hash && !openFromHash()) {
     var target = document.getElementById(location.hash.slice(1));
     if (target) target.scrollIntoView();
   }
