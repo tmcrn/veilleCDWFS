@@ -10,7 +10,7 @@ Site statique de veille sur trois sujets, chacun à son rythme, depuis le 20 nov
 | IA générative dans le dev | 1 fois toutes les 2 semaines |
 | Ordinateur quantique | 1 fois tous les 3 mois |
 
-Direction artistique reprise du [portfolio](https://github.com/tmcrn/Portfolio) (`assets/css/tokens.css`).
+Mise en page de l'ancienne page Veille du [portfolio](https://github.com/tmcrn/Portfolio), aux couleurs actuelles.
 
 ## Catégories
 
@@ -18,7 +18,7 @@ Direction artistique reprise du [portfolio](https://github.com/tmcrn/Portfolio) 
 - **IA générative** : Modèles, Outils & agents, Standards & usages
 - **Quantique** : Matériel, Correction d'erreurs, Industrie, Post-quantique
 
-Chaque sujet a des filtres par catégorie.
+Les catégories classent les annonces dans `data.js`.
 
 ## Ajouter un relevé
 
@@ -42,11 +42,15 @@ Le site range l'annonce dans sa semaine, quinzaine ou trimestre, met à jour la 
 
 ## Organisation de la page
 
-Même fonctionnement que l'ancienne page Veille du portfolio : écran de transition, sections qui apparaissent l'une après l'autre et **un onglet par sujet** (Sujet N, Pourquoi ce sujet ?, signaux faibles, faits marquants, sources utilisées). Suivent :
+Même code que l'ancienne page Veille du portfolio (`veille.html`, `veille.css`, `veille.js` d'avant le retrait du 14/10/2026) : écran de bienvenue, apparition des sections, onglets par sujet, blocs « Pourquoi ce sujet ? », faits marquants et sources utilisées, grille de méthode. Seules les couleurs changent : palette actuelle du portfolio (papier, espresso, terracotta), avec un mode sombre qui suit le système.
 
-- **Tableau de bord** : date prévue, réalisé, intérêt, horizon (H1/H2/H3), nombre de signaux faibles et d'améliorations, fréquence, régularité, statut. Tout est calculé depuis `data.js` ; seuls `interest` et `horizon` se règlent à la main dans `topics`.
-- **Événements** : liste `events` (titre, type, date, heure, lieu, sujets, lien).
-- **Améliorations** : liste `improvements`, une ligne par changement de la démarche.
+Ajouts construits avec les mêmes composants :
+
+- **Signaux faibles** dans chaque onglet (champ `signal` des annonces).
+- **Tableau de bord** : date prévue, réalisé, intérêt, horizon, signaux faibles, améliorations, fréquence, régularité, statut. `interest`, `horizon` et `frequency` se règlent dans `topics`.
+- **Événements** : liste `events`. **Améliorations** : liste `improvements`.
+
+Police GrandSlang : Web Font Free, CC BY 4.0.
 
 ## Lancer en local
 

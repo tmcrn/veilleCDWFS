@@ -1,128 +1,124 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Veille technologique — Timothé Cernon</title>
-  <meta name="description" content="Veille technologique de Timothé Cernon : real-time data streaming, IA générative dans le développement et ordinateur quantique, depuis le 20 novembre 2025.">
-  <meta name="theme-color" content="#FCF8F1" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1E1612" media="(prefers-color-scheme: dark)">
-  <link rel="icon" type="image/png" href="assets/images/favicon.png">
-
-  <!-- Thème posé avant le CSS : pas de flash au chargement -->
-  <script>
-    (function () {
-      var saved = null;
-      try { saved = localStorage.getItem('theme'); } catch (e) {}
-      var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
-      document.documentElement.classList.add('js');
-    })();
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/tokens.css">
-  <link rel="stylesheet" href="assets/css/veille.css">
-  <script src="assets/js/data.js" defer></script>
-  <script src="assets/js/app.js" defer></script>
-  <script src="assets/js/site.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#FCF8F1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1E1612" media="(prefers-color-scheme: dark)" />
+    <title>Veille Technologique - Timothé Cernon</title>
+    <meta name="description" content="Veille technologique de Timothé Cernon : real-time data streaming, IA générative dans le développement et ordinateur quantique, depuis le 20 novembre 2025.">
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="stylesheet" href="assets/css/veille.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="assets/js/data.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
 </head>
 <body>
-  <div class="welcome-screen" aria-hidden="true"></div>
-  <a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="welcome-screen"></div>
 
-  <header class="site-header">
-    <div class="container site-header__inner">
-      <nav class="nav" aria-label="Navigation principale">
-        <ul>
-          <li><a href="#accueil">Accueil</a></li>
-          <li><a href="#sujets">Sujets</a></li>
-          <li><a href="#tableau">Tableau de bord</a></li>
-          <li><a href="#evenements">Événements</a></li>
-          <li><a href="#methode">Méthode</a></li>
-        </ul>
-      </nav>
-      <button class="theme-toggle" type="button" aria-label="Changer de thème">◐</button>
+<div class="container">
+    <div class="header">
+        <a href="https://timothe-cernon.fr">
+            <img src="assets/images/PhotoCV.png" alt="Photo de profil" class="profile-pic">
+        </a>
+        <a href="https://timothe-cernon.fr" aria-label="Retour au portfolio">
+            <svg class="back" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9.00002 15.3802H13.92C15.62 15.3802 17 14.0002 17 12.3002C17 10.6002 15.62 9.22021 13.92 9.22021H7.15002" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8.57 10.7701L7 9.19012L8.57 7.62012" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </a>
     </div>
-  </header>
 
-  <main id="contenu" class="container site-main">
-    <section class="intro" id="accueil" aria-labelledby="titre-veille">
-      <h1 id="titre-veille">Veille technologique</h1>
-      <p class="intro__lead">Trois sujets, chacun à son rythme.</p>
-      <p>Le streaming de données bouge chaque semaine, l'IA générative pour les développeurs toutes les deux semaines, l'informatique quantique à l'échelle du trimestre. Chaque annonce retenue est résumée, avec ce qu'il faut en retenir et ses sources.</p>
-      <p class="intro__stats" data-stats></p>
-      <ul class="overview" data-overview aria-label="Les trois sujets"></ul>
-    </section>
+    <div class="content">
+        <div class="hero">
+            <h1 class="project-title">VEILLE</h1>
+            <p class="project-subtitle">Technologique & sectorielle</p>
+        </div>
 
-    <section class="page-block" id="sujets" aria-labelledby="titre-sujets">
-      <div class="page-head">
-        <p class="eyebrow">01 — 03 · Sujets</p>
-        <h2 id="titre-sujets">Mes trois sujets</h2>
-        <p>Un onglet par sujet : pourquoi je le suis, les signaux faibles repérés, les faits marquants relevés à chaque période et les sources utilisées.</p>
-      </div>
-      <div class="veille-tabs" role="tablist" aria-label="Sujets de veille" data-tabs></div>
-      <div class="section topic__body" data-topics></div>
-    </section>
+        <div class="sections">
 
-    <section class="page-block" id="tableau" aria-labelledby="titre-tableau">
-      <div class="page-head">
-        <p class="eyebrow">04 — Suivi</p>
-        <h2 id="titre-tableau">Tableau de bord</h2>
-        <p>Les indicateurs de suivi de ma veille, calculés à partir des relevés : fréquence, régularité, signaux faibles et améliorations.</p>
-      </div>
-      <div class="section dashboard" data-dashboard></div>
-    </section>
+            <!-- Intro -->
+            <section class="section intro-section">
+                <p>
+                    La veille technologique est une activité continue de surveillance de l'environnement technique
+                    et numérique. Elle me permet d'anticiper les évolutions, d'identifier les bonnes pratiques
+                    et de rester compétitif dans mon domaine. Je suis trois sujets depuis le 20 novembre 2025,
+                    chacun à son rythme : le streaming de données chaque semaine, l'IA générative toutes les
+                    deux semaines, l'informatique quantique tous les trois mois.
+                </p>
+            </section>
 
-    <section class="page-block" id="evenements" aria-labelledby="titre-evenements">
-      <div class="page-head">
-        <p class="eyebrow">05 — Agenda</p>
-        <h2 id="titre-evenements">Événements</h2>
-        <p>Conférences, salons et tables rondes auxquels je m'inscris cette année.</p>
-      </div>
-      <ul class="section events" data-events></ul>
-    </section>
+            <!-- Sujets tabs (générés depuis data.js) -->
+            <div class="section veille-tabs" data-tabs></div>
 
-    <section class="page-block" id="methode" aria-labelledby="titre-methode">
-      <div class="page-head">
-        <p class="eyebrow">06 — Organisation</p>
-        <h2 id="titre-methode">Ma méthode de veille</h2>
-        <p>Chaque sujet a son rythme, mais la démarche reste la même : collecter, vérifier, résumer, archiver.</p>
-      </div>
-      <ol class="section method">
-        <li class="card method__item">
-          <p class="eyebrow">Étape 1</p>
-          <h3>Collecte passive</h3>
-          <p>Flux RSS dans Feedly : blogs officiels (Apache Kafka, Flink, Confluent, OpenAI, Anthropic, GitHub, IBM Quantum, Google Quantum AI) et newsletters spécialisées, sans recherche manuelle.</p>
-        </li>
-        <li class="card method__item">
-          <p class="eyebrow">Étape 2</p>
-          <h3>Collecte active</h3>
-          <p>Comptes spécialisés sur X et LinkedIn pour capter l'actualité en temps réel et les réactions des développeurs, puis recherche ciblée quand une annonce revient souvent.</p>
-        </li>
-        <li class="card method__item">
-          <p class="eyebrow">Étape 3</p>
-          <h3>Tri et vérification</h3>
-          <p>Je ne garde une annonce que si je trouve sa source officielle : note de version, communiqué, article scientifique ou texte réglementaire. Les doublons et les rumeurs sont écartés.</p>
-        </li>
-        <li class="card method__item">
-          <p class="eyebrow">Étape 4</p>
-          <h3>Synthèse et archivage</h3>
-          <p>Chaque annonce retenue est résumée avec ce qu'il faut en retenir, rangée par catégorie et datée sur ce site. Le dépôt GitHub garde l'historique de chaque relevé.</p>
-        </li>
-      </ol>
-    </section>
+            <!-- Contenu des onglets (généré depuis data.js) -->
+            <div class="section" data-topics></div>
 
-    <noscript><p>Le contenu de la veille s'affiche avec JavaScript activé.</p></noscript>
-  </main>
+            <!-- Tableau de bord -->
+            <section class="section method-section" id="tableau">
+                <h2>Tableau de bord</h2>
+                <p class="section-lead">Indicateurs de suivi de ma veille, calculés à partir des relevés.</p>
+                <div data-dashboard></div>
+            </section>
 
-  <footer class="site-footer">
-    <div class="container site-footer__inner">
-      <p>Timothé Cernon · veille technologique</p>
-      <p><a href="https://timothe-cernon.fr">Portfolio</a> · <a href="https://github.com/tmcrn">GitHub</a></p>
+            <!-- Événements -->
+            <section class="section method-section" id="evenements">
+                <h2>Événements</h2>
+                <p class="section-lead">Conférences, salons et tables rondes auxquels je m'inscris cette année.</p>
+                <div class="veille-findings" data-events></div>
+            </section>
+
+            <!-- Méthode -->
+            <section class="section method-section" id="methode">
+                <h2>Ma méthode de veille</h2>
+
+                <div class="method-grid">
+                    <div class="method-item">
+                        <div class="method-icon"><i class="fa-solid fa-rss"></i></div>
+                        <h3>Collecte passive</h3>
+                        <p>
+                            Flux RSS dans Feedly : blogs officiels (Apache Kafka, Flink, Confluent, OpenAI,
+                            Anthropic, GitHub, IBM Quantum, Google Quantum AI) et newsletters spécialisées,
+                            sans recherche manuelle.
+                        </p>
+                    </div>
+                    <div class="method-item">
+                        <div class="method-icon"><i class="fa-brands fa-x-twitter"></i></div>
+                        <h3>Collecte active</h3>
+                        <p>
+                            Comptes spécialisés sur X et LinkedIn pour capter l'actualité en temps réel
+                            et les réactions des développeurs, puis recherche ciblée quand une annonce
+                            revient souvent.
+                        </p>
+                    </div>
+                    <div class="method-item">
+                        <div class="method-icon"><i class="fa-solid fa-filter"></i></div>
+                        <h3>Tri</h3>
+                        <p>
+                            Je ne garde une annonce que si je trouve sa source officielle : note de version,
+                            communiqué, article scientifique ou texte réglementaire. Les doublons et les
+                            rumeurs sont écartés.
+                        </p>
+                    </div>
+                    <div class="method-item">
+                        <div class="method-icon"><i class="fa-brands fa-github"></i></div>
+                        <h3>Stockage sur GitHub</h3>
+                        <p>
+                            Chaque annonce retenue est résumée, datée et publiée sur ce site.
+                            Le dépôt GitHub garde l'historique de chaque relevé.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <footer class="site-footer">
+            <p>Timothé Cernon · veille technologique · police GrandSlang : <a href="http://www.webfontfree.com">Web Font Free</a> (CC BY 4.0)</p>
+        </footer>
     </div>
-  </footer>
+</div>
+<noscript><p>Le contenu de la veille s'affiche avec JavaScript activé.</p></noscript>
 </body>
 </html>

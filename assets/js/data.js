@@ -787,7 +787,7 @@ window.VEILLE = {
     { date: "2026-11-09", topic: "", text: "Sources officielles (notes de version, communiqués) à la place des sources secondaires." },
     { date: "2026-11-09", topic: "", text: "« Pourquoi ce sujet ? » et méthode de veille, repris de l'ancienne page du portfolio." },
     { date: "2026-11-12", topic: "", text: "Signaux faibles repérés dans les annonces et comptés dans un tableau de bord." },
-    { date: "2026-11-12", topic: "", text: "Un onglet par sujet, comme sur l'ancienne page Veille du portfolio." },
+    { date: "2026-11-12", topic: "", text: "Retour au code de l'ancienne page Veille du portfolio (onglets par sujet), aux couleurs actuelles du portfolio." },
   ],
 
   // Conférences, salons, tables rondes… auxquels je m'inscris.
