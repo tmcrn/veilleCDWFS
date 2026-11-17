@@ -1,0 +1,72 @@
+name: Veille
+
+# Deux automatismes dans un seul fichier :
+#  - toutes les 15 minutes : relève des flux d'incident et alerte (scripts/alerte.mjs)
+#  - chaque dimanche soir : mesure les KPIs et garde l'historique (scripts/kpi.mjs)
+# Les horaires GitHub sont indicatifs : un passage peut avoir quelques minutes de retard.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+    - cron: "30 20 * * 0"
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "alerte, kpi ou test (envoie une fausse alerte pour vérifier les canaux)"
+        default: "alerte"
+        type: choice
+        options: [alerte, kpi, test]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: veille
+  cancel-in-progress: false
+
+jobs:
+  veille:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Choisir l'automatisme
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then echo "mode=${{ inputs.action }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "30 20 * * 0" ]; then echo "mode=kpi" >> "$GITHUB_OUTPUT"
+          else echo "mode=alerte" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Alerte
+        if: steps.mode.outputs.mode == 'alerte' || steps.mode.outputs.mode == 'test'
+        run: |
+          if [ "${{ steps.mode.outputs.mode }}" = "test" ]; then node scripts/alerte.mjs --test; else node scripts/alerte.mjs; fi
+          if [ -s data/nouvel-incident.md ]; then
+            gh issue create --title "Alerte : incident détecté $(date -u +%Y-%m-%d\ %H:%M) UTC" --body-file data/nouvel-incident.md
+          fi
+
+      - name: KPIs
+        if: steps.mode.outputs.mode == 'kpi'
+        run: |
+          node scripts/kpi.mjs --links
+          if [ -s data/hors-cible.md ]; then
+            gh issue create --title "KPIs hors cible au $(date -u +%Y-%m-%d)" --body-file data/hors-cible.md
+          fi
+
+      - name: Garder les mesures dans le dépôt
+        run: |
+          rm -f data/nouvel-incident.md
+          git config user.name "veille-bot"
+          git config user.email "veille-bot@users.noreply.github.com"
+          git add data/incidents.json data/kpi-history.json data/hors-cible.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Mesures de la veille ($(date -u +%Y-%m-%d\ %H:%M) UTC)"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

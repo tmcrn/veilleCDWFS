@@ -586,3 +586,86 @@
     }
   }
 }
+
+/* ==========================================================================
+   Pages Procédure et KPIs : tableaux, courbes, fiches
+   ========================================================================== */
+
+@layer components {
+  .muted { color: var(--text-3); }
+  .page-head .muted, .table-wrap > .muted { font-size: var(--fs-small); max-width: none; }
+  .table-wrap > .muted { margin: var(--s4) 0 0; }
+
+  .table-wrap { overflow-x: auto; }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-small);
+  }
+
+  .table th, .table td {
+    padding: var(--s3) var(--s4);
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .table thead th {
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    font-weight: 600;
+    color: var(--text-3);
+    border-bottom-color: var(--text-3);
+  }
+
+  .table tbody th { font-weight: 700; color: var(--text); }
+  .table .table__group th {
+    padding-top: var(--s5);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    color: var(--text-3);
+    border-bottom-color: var(--text-3);
+  }
+
+  .table code { font-family: var(--font-mono); font-size: var(--fs-mono); }
+
+  .cell strong { display: block; color: var(--text); }
+  .cell__target, .cell__state {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    color: var(--text-3);
+  }
+  .cell--ok .cell__state { color: var(--text); font-weight: 600; }
+  .cell--ko { border-left: 3px solid var(--accent); }
+  .cell--ko .cell__state { color: var(--text); font-weight: 700; }
+
+  /* Courbes : tracés par sujet, distingués par le trait et pas seulement par la couleur */
+  .chart { margin: 0; }
+  .chart__svg { width: 100%; height: auto; }
+  .chart__grid { stroke: var(--border); stroke-width: 1; }
+  .chart__tick { fill: var(--text-3); font-family: var(--font-mono); font-size: 11px; }
+  .chart__line--streaming, .chart__dot--streaming { stroke: var(--text); fill: none; }
+  .chart__line--ia, .chart__dot--ia { stroke: var(--text-2); fill: none; }
+  .chart__line--quantique, .chart__dot--quantique { stroke: var(--accent); fill: none; }
+  .chart__dot--streaming { fill: var(--text); }
+  .chart__dot--ia { fill: var(--text-2); }
+  .chart__dot--quantique { fill: var(--accent); }
+  .chart__target { stroke: var(--text-3); stroke-width: 1; stroke-dasharray: 1 5; opacity: .6; }
+  .chart__legend { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5); margin: var(--s3) 0; padding: 0; list-style: none; font-size: var(--fs-small); }
+  .chart__legend svg { vertical-align: middle; }
+  .chart figcaption { max-width: none; }
+
+  /* Fiches SMART */
+  .fiche__wrap { margin-bottom: var(--s3); }
+  .fiche__wrap summary { cursor: pointer; font-weight: 700; color: var(--action); }
+  .fiche__wrap summary .eyebrow { display: inline; margin-right: var(--s2); }
+  .fiche { margin: var(--s4) 0 0; display: grid; gap: var(--s3); }
+  .fiche dt { font-family: var(--font-mono); font-size: var(--fs-mono); color: var(--text-3); }
+  .fiche dd { margin: 0 0 var(--s2); padding-bottom: var(--s3); border-bottom: 1px solid var(--border); }
+  .fiche dd ul { margin: 0; padding-left: var(--s5); }
+  .fiche__wrap:target { border-color: var(--action); }
+
+  ol.method.section { padding-block: 0; }
+}

@@ -1,0 +1,39 @@
+{
+  "_note": "Glossaire bilingue pour éviter de rater un signal parce qu'il apparaît sous un synonyme ou dans l'autre langue. Sert aussi de requêtes pour les alertes et les flux. Terme canonique d'abord, synonymes ensuite.",
+  "streaming": [
+    ["Kafka", "Apache Kafka", "KRaft", "KIP", "Kafka Streams"],
+    ["Flink", "Apache Flink", "traitement de flux", "stream processing"],
+    ["temps réel", "real-time", "streaming de données", "event streaming"],
+    ["Pulsar", "Apache Pulsar", "StreamNative"],
+    ["CDC", "change data capture", "capture de changements"],
+    ["Lakehouse", "Streamhouse", "Tableflow", "Iceberg"],
+    ["Fluss", "Apache Fluss"],
+    ["Redpanda"],
+    ["Confluent", "Confluent Cloud"],
+    ["Agents", "agents IA", "AI agents", "MCP"]
+  ],
+  "ia": [
+    ["IA générative", "generative AI", "GenAI", "LLM", "grand modèle de langage"],
+    ["Agents", "agents de code", "coding agents", "agentic"],
+    ["MCP", "Model Context Protocol"],
+    ["Open weights", "poids ouverts", "Open source"],
+    ["Copilot", "GitHub Copilot", "assistant de code"],
+    ["Cursor", "IDE", "Antigravity"],
+    ["Codex", "Codex CLI", "Claude Code", "CLI"],
+    ["Modèle", "model", "release", "sortie de modèle"],
+    ["Sécurité", "security", "prompt injection", "supply chain"],
+    ["Usages", "adoption", "enquête", "survey"]
+  ],
+  "quantique": [
+    ["Correction d'erreurs", "error correction", "qubit logique", "logical qubit"],
+    ["Post-quantique", "post-quantum", "PQC", "cryptographie post-quantique"],
+    ["ANSSI", "NIST", "migration cryptographique"],
+    ["Matériel", "hardware", "processeur quantique", "QPU"],
+    ["QuEra", "atomes neutres", "neutral atoms"],
+    ["IBM", "IBM Quantum", "Starling"],
+    ["Quantinuum", "Helios", "ions piégés", "trapped ions"],
+    ["PsiQuantum", "photonique", "photonic"],
+    ["NVIDIA", "NVQLink", "CUDA-Q"],
+    ["Marché", "market", "IPO", "levée de fonds"]
+  ]
+}

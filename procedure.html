@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Procédure de veille H1 — Veille technologique — Timothé Cernon</title>
+  <meta name="description" content="Mise à jour de la procédure de veille H1 après la panne Microsoft : alerte automatique, mesure du temps pour être informé, deux canaux indépendants.">
+  <meta name="theme-color" content="#FCF8F1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1E1612" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/veille.css">
+  <script src="assets/js/procedure.js" defer></script>
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <nav class="nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="index.html#streaming">Streaming</a></li>
+          <li><a href="index.html#ia">IA générative</a></li>
+          <li><a href="index.html#quantique">Quantique</a></li>
+          <li><a href="index.html#methode">Méthode</a></li>
+          <li><a href="procedure.html" aria-current="page">Procédure</a></li>
+          <li><a href="kpi.html">KPIs</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Changer de thème">◐</button>
+    </div>
+  </header>
+
+  <main id="contenu" class="container site-main">
+    <section class="intro" aria-labelledby="titre-proc">
+      <p class="eyebrow">Procédure de veille H1 · mise à jour</p>
+      <h1 id="titre-proc">Après la panne Microsoft</h1>
+      <p class="intro__lead">Une panne ne doit plus m'arriver par un message de mon père.</p>
+      <p>Du 12 au 14 novembre 2026, Outlook, Teams et Copilot sont tombés dans le monde entier. Je l'ai appris le lendemain à 9 h, par un message WhatsApp. La procédure est mise à jour pour répondre à trois demandes : être alerté automatiquement, mesurer le temps pour être informé, avoir au moins deux canaux indépendants.</p>
+      <ul class="overview" data-proc-chiffres aria-label="Chiffres clés"></ul>
+    </section>
+
+    <section class="page-block" id="constat" aria-labelledby="titre-constat">
+      <div class="page-head">
+        <p class="eyebrow">Point de départ</p>
+        <h2 id="titre-constat">Ce qui s'est passé pour moi</h2>
+      </div>
+      <div class="section table-wrap">
+        <table class="table">
+          <thead><tr><th scope="col">Moment</th><th scope="col">Événement</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Jeudi 12 novembre, vers 17 h (heure de Paris)</th><td>Début de la panne d'après la presse. Les sources donnent environ 16 h GMT, l'heure exacte varie d'un article à l'autre.</td></tr>
+            <tr><th scope="row">Vendredi 13 novembre, 9 h</th><td>Je l'apprends par un message WhatsApp de mon père. Aucune alerte de ma veille.</td></tr>
+            <tr><th scope="row">Délai</th><td><strong>environ 16 heures</strong> (960 minutes). C'est ma mesure de référence.</td></tr>
+          </tbody>
+        </table>
+        <p class="muted">Sources : <a href="https://www.aljazeera.com/news/2026/11/13/microsoft-hit-by-global-outages-what-happened-and-why">Al Jazeera</a> et <a href="https://en.wikipedia.org/wiki/2026_Microsoft_outage">Wikipedia</a>. Le diagnostic : ma veille ne surveillait que des annonces de produits, jamais l'état des services dont je dépends.</p>
+      </div>
+    </section>
+
+    <section class="page-block" id="alerte" aria-labelledby="titre-alerte">
+      <div class="page-head">
+        <p class="eyebrow">Demande 1</p>
+        <h2 id="titre-alerte">Être alerté automatiquement</h2>
+        <p>Un script relève deux sources toutes les 15 minutes. Dès qu'un nouvel incident apparaît, il m'envoie une notification push et ouvre une issue GitHub, ce qui déclenche un e-mail.</p>
+      </div>
+      <div class="section table-wrap">
+        <table class="table">
+          <thead><tr><th scope="col">Détecteur</th><th scope="col">Règle</th><th scope="col">Limite</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Flux d'état Azure</th><td>Chaque incident publié par Microsoft déclenche l'alerte, avec l'heure de début donnée par Microsoft.</td><td>Ne couvre que les services Azure. Outlook et Teams relèvent de Microsoft 365, d'où le second détecteur.</td></tr>
+            <tr><th scope="row">Presse (Google Actualités)</th><td>Au moins 3 articles de moins de 6 h sur une panne Microsoft, dont un qui parle d'une panne en cours.</td><td>La presse arrive après le début de la panne, donc le délai est plus long. Un article d'analyse d'une ancienne panne ne déclenche rien : un faux positif a été corrigé pendant les essais.</td></tr>
+          </tbody>
+        </table>
+        <p class="muted">Les relevés tournent sur GitHub Actions, pas sur mon ordinateur : l'alerte fonctionne même s'il est éteint. GitHub peut retarder une exécution de quelques minutes.</p>
+      </div>
+    </section>
+
+    <section class="page-block" id="mesure" aria-labelledby="titre-mesure">
+      <div class="page-head">
+        <p class="eyebrow">Demande 2</p>
+        <h2 id="titre-mesure">Mesurer le time to be informed</h2>
+        <p>Pour chaque incident : délai = heure à laquelle j'ai été informé − heure de début. Le journal est dans <code>data/incidents.json</code>. Objectif : au plus 30 minutes en médiane, contre 960 minutes au départ.</p>
+      </div>
+      <div class="section table-wrap" data-incidents></div>
+    </section>
+
+    <section class="page-block" id="canaux" aria-labelledby="titre-canaux">
+      <div class="page-head">
+        <p class="eyebrow">Demande 3</p>
+        <h2 id="titre-canaux">Au moins deux canaux en même temps</h2>
+        <p>Si Microsoft tombe, mon accès à Outlook et Teams tombe aussi. Les canaux d'alerte ne passent donc par aucun service Microsoft.</p>
+      </div>
+      <div class="section table-wrap" data-canaux></div>
+    </section>
+
+    <section class="page-block" id="amelioration" aria-labelledby="titre-amel">
+      <div class="page-head">
+        <p class="eyebrow">Amélioration continue</p>
+        <h2 id="titre-amel">Comment le délai baisse</h2>
+      </div>
+      <div class="section">
+        <ol class="method">
+          <li class="card method__item"><p class="eyebrow">Étape 1</p><h3>Mesurer</h3><p>Chaque incident est daté : début, détection, canal. Le délai médian est publié dans les KPIs A1 et A2.</p></li>
+          <li class="card method__item"><p class="eyebrow">Étape 2</p><h3>Tester</h3><p>Chaque mois, un test d'alerte (workflow GitHub « Veille », action test) vérifie que chaque canal reçoit bien le message. Un canal n'est « actif » qu'après un test réussi.</p></li>
+          <li class="card method__item"><p class="eyebrow">Étape 3</p><h3>Ajouter une source</h3><p>Si le délai dépasse 30 minutes, j'ajoute un détecteur : autre flux d'état, compte officiel, ou liste de diffusion.</p></li>
+          <li class="card method__item"><p class="eyebrow">Étape 4</p><h3>Revoir</h3><p>Chaque faux positif ou raté devient une règle corrigée dans <code>scripts/alerte.mjs</code>, avec le commit qui l'explique.</p></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Timothé Cernon · veille technologique</p>
+      <p><a href="https://timothe-cernon.fr">Portfolio</a> · <a href="https://github.com/tmcrn/veilleCDWFS">Code et mesures sur GitHub</a></p>
+    </div>
+  </footer>
+</body>
+</html>

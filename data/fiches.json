@@ -1,0 +1,275 @@
+[
+ {
+  "id": "P1",
+  "categorie": "Pertinence",
+  "cle": "couverture_cadence",
+  "nom": "Couverture de la cadence",
+  "objet": "Vérifier que la veille tient le rythme promis pour chaque sujet : une semaine (H1), une quinzaine (H2), un trimestre (H3).",
+  "role": "Montre si le sujet est suivi assez régulièrement pour rester pertinent. Une série de périodes vides signale une source épuisée ou un sujet mal cadré.",
+  "slo": "Au moins {c} % des périodes terminées contiennent une annonce retenue.",
+  "cibles": {
+   "streaming": 50,
+   "ia": 70,
+   "quantique": 100
+  },
+  "sens": "min",
+  "unite": "%",
+  "penalite": "Sous la cible : ajouter au moins 2 sources officielles (blog, notes de version, flux RSS) pour le sujet dans les 14 jours, puis rouvrir l'objectif si le taux reste sous la cible 2 mois de suite.",
+  "formule": "périodes terminées avec ≥ 1 annonce ÷ périodes terminées × 100",
+  "periode": "Relevé hebdomadaire (dimanche). Historique depuis le 20 novembre 2025.",
+  "hypotheses": "Une période sans annonce n'est pas un échec si rien de notable n'a été publié : on ne remplit jamais une période pour améliorer le chiffre. La période en cours est exclue.",
+  "outil": "GitHub Actions (scripts/kpi.mjs)"
+ },
+ {
+  "id": "P2",
+  "categorie": "Pertinence",
+  "cle": "couverture_categories",
+  "nom": "Couverture des catégories",
+  "objet": "Vérifier que toutes les catégories du sujet (versions, plateformes, matériel, etc.) reçoivent des annonces.",
+  "role": "Évite une veille qui ne regarde qu'un coin du sujet et manque des signaux dans les autres catégories.",
+  "slo": "Au moins {c} % des catégories du sujet ont une annonce depuis le début.",
+  "cibles": {
+   "streaming": 100,
+   "ia": 100,
+   "quantique": 100
+  },
+  "sens": "min",
+  "unite": "%",
+  "penalite": "Sous la cible : chercher une source dédiée à la catégorie vide dans les 14 jours, ou supprimer la catégorie si elle n'a plus de raison d'être.",
+  "formule": "catégories avec ≥ 1 annonce ÷ catégories du sujet × 100",
+  "periode": "Relevé hebdomadaire, cumul depuis le 20 novembre 2025.",
+  "hypotheses": "La liste des catégories est celle de data.js. Une catégorie ajoutée en cours de route fait baisser le taux jusqu'à sa première annonce.",
+  "outil": "GitHub Actions (scripts/kpi.mjs)"
+ },
+ {
+  "id": "Q1",
+  "categorie": "Qualité",
+  "cle": "sources_primaires",
+  "nom": "Taux d'annonces à source primaire",
+  "objet": "Mesurer la part des annonces appuyées par une source primaire : projet officiel, éditeur, régulateur ou recherche.",
+  "role": "Première défense contre les rumeurs et les fausses informations : une annonce sans source primaire n'est pas retenue.",
+  "slo": "Au moins {c} % des annonces ont une source primaire.",
+  "cibles": {
+   "streaming": 90,
+   "ia": 90,
+   "quantique": 90
+  },
+  "sens": "min",
+  "unite": "%",
+  "penalite": "Sous la cible : retirer ou rattacher une source primaire à chaque annonce concernée avant le prochain relevé.",
+  "formule": "annonces avec ≥ 1 source primaire ÷ annonces × 100",
+  "periode": "Relevé hebdomadaire, cumul depuis le 20 novembre 2025.",
+  "hypotheses": "Le classement des domaines est dans data/sources.json et reste un jugement personnel, modifiable. Un domaine absent du fichier compte comme non primaire.",
+  "outil": "GitHub Actions (scripts/kpi.mjs)"
+ },
+ {
+  "id": "Q2",
+  "categorie": "Qualité",
+  "cle": "croisement_2_sources",
+  "nom": "Taux de recoupement (cross-check)",
+  "objet": "Mesurer la part des annonces confirmées par au moins deux sources.",
+  "role": "Réduit le risque de se fier à une seule source erronée ou partielle.",
+  "slo": "Au moins {c} % des annonces ont 2 sources ou plus.",
+  "cibles": {
+   "streaming": 50,
+   "ia": 50,
+   "quantique": 66
+  },
+  "sens": "min",
+  "unite": "%",
+  "penalite": "Sous la cible : pour chaque nouvelle annonce, chercher une deuxième source (note de version et dépôt de code, communiqué et dépôt réglementaire) avant de la publier.",
+  "formule": "annonces avec ≥ 2 sources ÷ annonces × 100",
+  "periode": "Relevé hebdomadaire, cumul depuis le 20 novembre 2025.",
+  "hypotheses": "Deux liens du même éditeur comptent comme deux sources. Le contrôle croisé par un tiers indépendant n'est pas mesuré ici.",
+  "outil": "GitHub Actions (scripts/kpi.mjs)"
+ },
+ {
+  "id": "Q3",
+  "categorie": "Qualité",
+  "cle": "score_qualite_sources",
+  "nom": "Source Quality Score",
+  "objet": "Noter la fiabilité des sources avec la formule du plan de stratégie : 30 % expertise de l'auteur (AE) + 40 % réputation de l'institution (IR) + 30 % relecture ou rigueur éditoriale (PR).",
+  "role": "Résume en un chiffre la solidité des sources et signale un sujet qui dépend trop de blogs d'éditeurs sans relecture indépendante.",
+  "slo": "Score moyen d'au moins {c} / 100.",
+  "cibles": {
+   "streaming": 70,
+   "ia": 70,
+   "quantique": 70
+  },
+  "sens": "min",
+  "unite": "/100",
+  "penalite": "Sous la cible : ajouter une source indépendante (projet officiel, université, régulateur) aux annonces dont le score est le plus bas.",
+  "formule": "moyenne, par annonce, de (0,3 × AE + 0,4 × IR + 0,3 × PR) sur ses sources, puis moyenne sur les annonces",
+  "periode": "Relevé hebdomadaire, cumul depuis le 20 novembre 2025.",
+  "hypotheses": "Les notes par type de source sont subjectives (data/sources.json). Un éditeur a une relecture indépendante faible par nature, ce qui tire le score vers le bas pour l'IA.",
+  "outil": "GitHub Actions (scripts/kpi.mjs)"
+ },
+ {
+  "id": "Q4",
+  "categorie": "Qualité",
+  "cle": "sante_liens",
+  "nom": "Santé des liens sources",
+  "objet": "Vérifier que chaque source citée répond encore.",
+  "role": "Une annonce dont la source a disparu n'est plus vérifiable : ce KPI protège la traçabilité.",
+  "slo": "Au moins {c} % des liens vérifiables répondent.",
+  "cibles": {
+   "streaming": 98,
+   "ia": 98,
+   "quantique": 98
+  },
+  "sens": "min",
+  "unite": "%",
+  "penalite": "Sous la cible : remplacer chaque lien cassé par une archive ou une source équivalente dans les 7 jours (une issue est ouverte automatiquement).",
+  "formule": "liens qui répondent ÷ liens vérifiables × 100",
+  "periode": "Relevé hebdomadaire par GitHub Actions. Pas de reconstitution pour le passé.",
+  "hypotheses": "Les sites qui refusent les robots (réponses 401, 403, 429) sont exclus du calcul et comptés à part, puis ouverts à la main.",
+  "outil": "GitHub Actions (scripts/kpi.mjs)"
+ },
+ {
+  "id": "Q5",
+  "categorie": "Qualité",
+  "cle": "delai_reception_jours",
+  "nom": "Time to Receive Information",
+  "objet": "Mesurer le temps entre la publication d'une information et le moment où elle entre dans la veille.",
+  "role": "Montre si les sources et les alertes sont assez rapides pour que la veille reste utile.",
+  "slo": "Délai moyen d'au plus {c} jours.",
+  "cibles": {
+   "streaming": 3,
+   "ia": 7,
+   "quantique": 30
+  },
+  "sens": "max",
+  "unite": "jours",
+  "penalite": "Au-dessus de la cible : ajouter un flux RSS ou une alerte sur la source concernée, et chercher les annonces arrivées en retard.",
+  "formule": "moyenne de (date de détection − date de l'annonce) sur les annonces qui ont un champ « seen »",
+  "periode": "Relevé hebdomadaire, annonces ajoutées depuis le champ « seen ».",
+  "hypotheses": "Le champ « seen » n'existe pas pour les annonces déjà publiées : la mesure démarre avec les prochaines. Tant qu'aucune annonce ne le porte, le KPI reste « non mesuré ».",
+  "outil": "GitHub Actions (scripts/kpi.mjs)"
+ },
+ {
+  "id": "I1",
+  "categorie": "Intérêt",
+  "cle": "signaux_faibles",
+  "nom": "Signaux faibles détectés",
+  "objet": "Compter les annonces marquées comme signal faible : un fait isolé ou discret qui pourrait devenir important.",
+  "role": "Mesure l'intérêt de la veille au-delà de l'actualité évidente : elle doit repérer ce qui n'est pas encore une tendance.",
+  "slo": "Au moins {c} signaux faibles marqués depuis le début.",
+  "cibles": {
+   "streaming": 3,
+   "ia": 3,
+   "quantique": 1
+  },
+  "sens": "min",
+  "unite": "annonces",
+  "penalite": "Sous la cible : relire les annonces du mois et marquer celles qui sont isolées ou inattendues ; ajouter une source de niche (listes de diffusion, propositions d'amélioration, dépôts) si rien n'apparaît.",
+  "formule": "annonces avec signal: true",
+  "periode": "Relevé hebdomadaire, cumul depuis le 20 novembre 2025.",
+  "hypotheses": "Le marquage est fait à la main, avec le champ « signal: true » dans data.js. Aucune annonce n'est marquée à ce jour : le KPI part de zéro.",
+  "outil": "GitHub Actions + marquage manuel"
+ },
+ {
+  "id": "U1",
+  "categorie": "Utilité",
+  "cle": "annonces_utilisees",
+  "nom": "Annonces utilisées",
+  "objet": "Compter les annonces réellement réutilisées : projet, cours, décision technique ou discussion.",
+  "role": "Prouve que la veille sert à quelque chose et pas seulement à collectionner des liens.",
+  "slo": "Au moins {c} annonce utilisée par sujet.",
+  "cibles": {
+   "streaming": 1,
+   "ia": 1,
+   "quantique": 1
+  },
+  "sens": "min",
+  "unite": "annonces",
+  "penalite": "Sous la cible : choisir une annonce par mois et la relier à un projet ou à un cours ; abandonner les sources qui n'alimentent jamais rien.",
+  "formule": "annonces avec le champ usedIn renseigné",
+  "periode": "Relevé hebdomadaire, cumul depuis le 20 novembre 2025.",
+  "hypotheses": "Le champ « usedIn » est rempli à la main (nom du projet ou du cours). Aucune annonce n'est renseignée à ce jour : le KPI part de zéro.",
+  "outil": "GitHub Actions + saisie manuelle"
+ },
+ {
+  "id": "T1",
+  "categorie": "Traduction",
+  "cle": "sources_langue_origine",
+  "nom": "Sources lues dans leur langue d'origine",
+  "objet": "Mesurer la part des sources publiées par l'émetteur d'origine, donc lues sans traduction ni relais.",
+  "role": "Évite la double traduction : une traduction ou un relais peut changer un terme et faire rater un signal.",
+  "slo": "Au moins {c} % des sources sont des sources d'origine.",
+  "cibles": {
+   "streaming": 85,
+   "ia": 85,
+   "quantique": 85
+  },
+  "sens": "min",
+  "unite": "%",
+  "penalite": "Sous la cible : remplacer les relais par la source d'origine, ou recouper le terme avec le glossaire bilingue.",
+  "formule": "sources d'un domaine classé primaire ÷ sources × 100",
+  "periode": "Relevé hebdomadaire, cumul depuis le 20 novembre 2025.",
+  "hypotheses": "Une source est d'origine si son domaine est classé primaire dans data/sources.json. Les médias sont considérés comme des relais.",
+  "outil": "GitHub Actions (scripts/kpi.mjs)"
+ },
+ {
+  "id": "T2",
+  "categorie": "Traduction",
+  "cle": "glossaire_couverture_tags",
+  "nom": "Couverture du glossaire bilingue",
+  "objet": "Mesurer la part des mots-clés des annonces qui figurent dans le glossaire FR/EN avec leurs synonymes.",
+  "role": "Garantit que les alertes et recherches couvrent les synonymes et les deux langues, pour ne pas rater un signal faible sous un autre nom.",
+  "slo": "Au moins {c} % des mots-clés sont dans le glossaire.",
+  "cibles": {
+   "streaming": 80,
+   "ia": 80,
+   "quantique": 80
+  },
+  "sens": "min",
+  "unite": "%",
+  "penalite": "Sous la cible : ajouter au glossaire les mots-clés manquants avec leurs synonymes FR et EN, puis les reprendre dans les requêtes d'alerte.",
+  "formule": "mots-clés des annonces présents dans data/glossaire.json ÷ mots-clés distincts × 100",
+  "periode": "Relevé hebdomadaire, cumul depuis le 20 novembre 2025.",
+  "hypotheses": "La correspondance est exacte, sans tenir compte de la casse. Le glossaire compte 10 entrées par sujet pour commencer.",
+  "outil": "GitHub Actions (scripts/kpi.mjs)"
+ },
+ {
+  "id": "A1",
+  "categorie": "Alerte",
+  "cle": "tti_median_min",
+  "nom": "Time to be informed (panne majeure)",
+  "objet": "Mesurer le temps entre le début d'une panne d'un service critique (Microsoft, GitHub, etc.) et le moment où j'en suis informé.",
+  "role": "Répond au devoir n°1 : après la panne Microsoft, la veille doit m'alerter seule, vite, sans dépendre de quelqu'un.",
+  "slo": "Délai médian d'au plus {c} minutes.",
+  "cibles": {
+   "streaming": 30,
+   "ia": 30,
+   "quantique": 30
+  },
+  "sens": "max",
+  "unite": "min",
+  "penalite": "Au-dessus de la cible : ajouter une source ou raccourcir l'intervalle de relève, puis refaire un test d'alerte.",
+  "formule": "médiane de (date de détection − date de début de l'incident) sur data/incidents.json",
+  "periode": "Chaque incident, avec un bilan mensuel.",
+  "hypotheses": "La mesure de référence (panne Microsoft du 12 novembre 2026) est manuelle : début vers 16 h GMT d'après la presse, information par mon père sur WhatsApp le 13 novembre à 9 h (heure de Paris). Les mesures suivantes sont automatiques.",
+  "outil": "GitHub Actions (scripts/alerte.mjs) + ntfy"
+ },
+ {
+  "id": "A2",
+  "categorie": "Alerte",
+  "cle": "canaux_independants",
+  "nom": "Canaux d'alerte indépendants",
+  "objet": "Compter les canaux d'information et de communication actifs qui ne dépendent pas du service qui tombe.",
+  "role": "Répond au devoir n°1 : si Outlook ou Teams tombent, je dois encore recevoir l'alerte par au moins deux autres chemins.",
+  "slo": "Au moins {c} canaux indépendants de Microsoft en même temps.",
+  "cibles": {
+   "streaming": 2,
+   "ia": 2,
+   "quantique": 2
+  },
+  "sens": "min",
+  "unite": "canaux",
+  "penalite": "Sous la cible : activer un canal supplémentaire (notification push, e-mail personnel, SMS) et refaire un test d'alerte.",
+  "formule": "canaux de data/canaux.json avec actif = true",
+  "periode": "Vérification mensuelle, par un test d'alerte.",
+  "hypotheses": "Un canal est « actif » seulement après un test réussi. Le fichier est tenu à jour à la main.",
+  "outil": "ntfy + e-mail GitHub"
+ }
+]

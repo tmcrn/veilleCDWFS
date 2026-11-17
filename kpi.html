@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KPIs — Veille technologique — Timothé Cernon</title>
+  <meta name="description" content="Stratégie de veille : horizons, KPIs SMART, mesures et historique.">
+  <meta name="theme-color" content="#FCF8F1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1E1612" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/veille.css">
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/kpi.js" defer></script>
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <nav class="nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="index.html#streaming">Streaming</a></li>
+          <li><a href="index.html#ia">IA générative</a></li>
+          <li><a href="index.html#quantique">Quantique</a></li>
+          <li><a href="index.html#methode">Méthode</a></li>
+          <li><a href="procedure.html">Procédure</a></li>
+          <li><a href="kpi.html" aria-current="page">KPIs</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Changer de thème">◐</button>
+    </div>
+  </header>
+
+  <main id="contenu" class="container site-main">
+    <section class="intro" aria-labelledby="titre-kpi">
+      <p class="eyebrow">Stratégie de veille</p>
+      <h1 id="titre-kpi">KPIs de la veille</h1>
+      <p class="intro__lead">Chaque relevé est mesuré, et l'historique est gardé.</p>
+      <p>Cette page suit le plan de stratégie : objectifs SMART par horizon, indicateurs de pertinence, de qualité, d'intérêt, d'utilité et de traduction, une fiche SMART par KPI et les mesures depuis le 20 novembre 2025. Les mesures sont calculées par un script exécuté par GitHub Actions et enregistrées dans le dépôt, donc chaque valeur a une date et un historique.</p>
+      <p class="intro__stats" data-kpi-stats></p>
+    </section>
+
+    <section class="page-block" id="horizons" aria-labelledby="titre-horizons">
+      <div class="page-head">
+        <p class="eyebrow">Objectifs et horizons</p>
+        <h2 id="titre-horizons">Trois horizons, trois rythmes</h2>
+        <p>Chaque sujet a un objectif SMART : un but précis, un rythme, des sources, une échéance.</p>
+      </div>
+      <div class="section table-wrap">
+        <table class="table">
+          <thead><tr><th scope="col">Horizon</th><th scope="col">Sujet et rythme</th><th scope="col">But mesurable</th><th scope="col">Sources</th><th scope="col">Échéance</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">H1<br><span class="muted">court terme</span></th><td>Real-time data streaming<br><span class="muted">chaque semaine</span></td><td>Suivre les versions, rachats et architectures de Kafka, Flink, Pulsar et Fluss. Au moins la moitié des semaines avec une annonce retenue.</td><td>Notes de version, blogs officiels des projets et éditeurs.</td><td>Relevé hebdomadaire, bilan au 9 décembre 2026.</td></tr>
+            <tr><th scope="row">H2<br><span class="muted">moyen terme</span></th><td>IA générative dans le dev<br><span class="muted">toutes les 2 semaines</span></td><td>Savoir quels modèles et outils changent mon travail de développeur. Au moins 70 % des quinzaines avec une annonce retenue.</td><td>Blogs et notes de version des éditeurs, enquêtes, standards ouverts.</td><td>Relevé tous les 15 jours, bilan au 9 décembre 2026.</td></tr>
+            <tr><th scope="row">H3<br><span class="muted">long terme</span></th><td>Ordinateur quantique<br><span class="muted">tous les 3 mois</span></td><td>Repérer les vraies étapes vers une machine utile et l'échéance de la cryptographie post-quantique. Chaque trimestre couvert.</td><td>Constructeurs, régulateurs (ANSSI, SEC), recherche universitaire.</td><td>Relevé trimestriel, scénarios à revoir au prochain trimestre.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page-block" id="mesures" aria-labelledby="titre-mesures">
+      <div class="page-head">
+        <p class="eyebrow">Dernier relevé</p>
+        <h2 id="titre-mesures">Où en sont les KPIs</h2>
+        <p>Chaque case donne la valeur mesurée, la cible et l'écart. « Non mesuré » veut dire qu'aucune donnée n'existe encore : le chiffre n'est pas inventé.</p>
+      </div>
+      <div class="section table-wrap" data-mesures></div>
+    </section>
+
+    <section class="page-block" id="historique" aria-labelledby="titre-histo">
+      <div class="page-head">
+        <p class="eyebrow">Historique</p>
+        <h2 id="titre-histo">Évolution depuis le 20 novembre 2025</h2>
+        <p>Un point par dimanche. Les relevés d'avant le 17 novembre 2026 sont reconstitués à partir des annonces datées, ceux d'après sont mesurés par le script chaque semaine.</p>
+      </div>
+      <div class="section">
+        <div class="filters" role="group" aria-label="Choisir un KPI" data-histo-choix></div>
+        <figure class="chart" data-histo></figure>
+      </div>
+    </section>
+
+    <section class="page-block" id="fiches" aria-labelledby="titre-fiches">
+      <div class="page-head">
+        <p class="eyebrow">Fiches SMART</p>
+        <h2 id="titre-fiches">Une fiche par KPI</h2>
+        <p>Chaque fiche reprend le modèle du cours : nom, objet, rôle, objectif de niveau de service, pénalités du SLA, formule, période, hypothèses et exclusions.</p>
+      </div>
+      <div class="section" data-fiches></div>
+    </section>
+
+    <section class="page-block" id="outils" aria-labelledby="titre-outils">
+      <div class="page-head">
+        <p class="eyebrow">Outils</p>
+        <h2 id="titre-outils">Qui fait quoi</h2>
+        <p>Les outils sont choisis selon leur rôle, avec l'automatisation en priorité.</p>
+      </div>
+      <div class="section table-wrap">
+        <table class="table">
+          <thead><tr><th scope="col">Rôle</th><th scope="col">Outil</th><th scope="col">Ce qu'il automatise</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Collecte</th><td>Flux RSS officiels, Google Actualités</td><td>Les blogs et notes de version des projets, et la presse sur les pannes.</td></tr>
+            <tr><th scope="row">Analyse</th><td>GitHub Actions, <code>scripts/kpi.mjs</code> et <code>scripts/alerte.mjs</code></td><td>Calcul des KPIs chaque dimanche, relève des flux d'incident toutes les 15 minutes, vérification des liens.</td></tr>
+            <tr><th scope="row">Alerte</th><td>ntfy (notification push) et issues GitHub (e-mail)</td><td>Deux canaux qui ne dépendent pas de Microsoft.</td></tr>
+            <tr><th scope="row">Visualisation</th><td>Cette page</td><td>Tableau de bord alimenté par <code>data/kpi-history.json</code>, sans saisie.</td></tr>
+            <tr><th scope="row">Organisation</th><td>Dépôt GitHub</td><td>Base de connaissance : annonces (<code>data.js</code>), sources classées (<code>data/sources.json</code>), glossaire bilingue, historique de chaque mesure.</td></tr>
+          </tbody>
+        </table>
+        <p class="muted">Choix assumé : pas de plateforme payante comme Meltwater ou Digimind. Pour trois sujets et une personne, un dépôt GitHub donne gratuitement l'historique versionné, l'automatisation et la page de visualisation.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Timothé Cernon · veille technologique</p>
+      <p><a href="https://timothe-cernon.fr">Portfolio</a> · <a href="https://github.com/tmcrn/veilleCDWFS">Code et mesures sur GitHub</a></p>
+    </div>
+  </footer>
+</body>
+</html>

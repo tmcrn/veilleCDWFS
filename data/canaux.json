@@ -1,0 +1,9 @@
+{
+  "_note": "Canaux d'alerte indépendants de Microsoft. Mettre actif à true seulement après un test réussi (workflow « Veille », option test).",
+  "canaux": [
+    { "id": "ntfy", "nom": "Notification push ntfy sur le téléphone", "type": "communication", "dependance": "ntfy.sh, aucune dépendance à Microsoft", "actif": false, "dernier_test": null },
+    { "id": "github-mail", "nom": "E-mail GitHub (issue ouverte automatiquement) sur Gmail", "type": "communication", "dependance": "GitHub et Gmail, aucune dépendance à Microsoft", "actif": false, "dernier_test": null },
+    { "id": "azure-status", "nom": "Flux d'état Azure (RSS)", "type": "information", "dependance": "Microsoft Azure, informe mais ne tombe pas avec Outlook et Teams", "actif": true, "dernier_test": null },
+    { "id": "presse", "nom": "Flux de presse Google Actualités (panne + Outlook, Teams, Copilot)", "type": "information", "dependance": "Google, aucune dépendance à Microsoft", "actif": true, "dernier_test": null }
+  ]
+}

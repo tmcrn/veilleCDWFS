@@ -1,0 +1,12 @@
+[
+  {
+    "id": "msft-2026-11-12",
+    "service": "Microsoft Outlook, Teams, Copilot",
+    "debut": "2026-11-12T16:00:00Z",
+    "detecte": "2026-11-13T08:00:00Z",
+    "canal": "WhatsApp (mon père)",
+    "delai_min": 960,
+    "reference": true,
+    "note": "Mesure de référence faite à la main. Début vers 16 h GMT d'après la presse, information le vendredi 13 novembre à 9 h heure de Paris (8 h GMT). Avant le système d'alerte."
+  }
+]
